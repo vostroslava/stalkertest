@@ -707,22 +707,22 @@
     <div class="modal-backdrop" id="leadModal" aria-hidden="true">
         <div class="modal-overlay" onclick="closeLeadModal()"></div>
 
-        <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
             <button class="modal-close" type="button" onclick="closeLeadModal()">×</button>
 
-            <!-- Banner if accessed from test button -->
+            <!-- Баннер, если пользователь пришёл из мини-теста -->
             <div id="testAccessBanner" class="test-access-banner" style="display:none;">
-                ТЕСТ ДОСТУПЕН ТОЛЬКО ПОСЛЕ РЕГИСТРАЦИИ
+                Мини-тест станет доступен после отправки заявки. Заполните форму ниже.
             </div>
 
-            <h2 id="modalTitle">Заявка на офлайн-программу «Теремок»</h2>
+            <h2 id="leadModalTitle">Заявка на офлайн-программу «Теремок»</h2>
             <p class="modal-subtitle">
                 Оставьте контакты и кратко опишите вашу команду. Мы свяжемся в ближайший рабочий день,
-                подтвердим участие в живом практикуме в Минске и зададим несколько вопросов о ваших сотрудниках.
-                После отправки заявки на сайте автоматически откроется мини-тест по одному сотруднику.
+                подтвердим участие в живом практикуме в Минске, уточним детали и зададим несколько вопросов
+                о сотрудниках. После отправки заявки автоматически откроется мини-тест по одному сотруднику.
             </p>
 
-            <form id="leadForm">
+            <form id="leadForm" novalidate>
                 <div class="field-group">
                     <label for="name">Имя <span class="required">*</span></label>
                     <input class="input" type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
@@ -745,8 +745,8 @@
                 </div>
 
                 <div class="field-group">
-                    <label for="team_size">Размер команды</label>
-                    <select class="select" id="team_size" name="team_size">
+                    <label for="team_size">Размер команды <span class="required">*</span></label>
+                    <select class="select" id="team_size" name="team_size" required>
                         <option value="" disabled selected>Выберите вариант</option>
                         <option value="1-10">1–10 человек</option>
                         <option value="11-50">11–50 человек</option>
@@ -759,7 +759,7 @@
                     <label for="phone">Телефон <span class="required">*</span></label>
                     <input class="input" type="tel" id="phone" name="phone" placeholder="+375 (__) ___-__-__" required>
                     <div class="field-hint">
-                        Номер нужен, чтобы связаться с вами в удобном мессенджере и подтвердить офлайн-участие.
+                        Укажите номер с мессенджером — мы свяжемся в удобном канале.
                     </div>
                 </div>
 
@@ -777,23 +777,23 @@
                 <div class="field-group">
                     <label for="email">E-mail</label>
                     <input class="input" type="email" id="email" name="email"
-                        placeholder="Если удобно получить детали участия на почту">
+                        placeholder="Чтобы получить детали участия на почту (по желанию)">
                 </div>
 
                 <div class="field-group">
                     <label for="request">Ваш запрос (кратко)</label>
                     <textarea id="request" name="request"
-                        placeholder="С чем хотите поработать на «Теремке»: текучка, вовлечённость, подбор, управленческие решения..."></textarea>
+                        placeholder="Например: высокая текучка, разные типажи в отделе, сложно управлять вовлечённостью..."></textarea>
                 </div>
 
                 <div class="field-group">
                     <label class="consent-label">
                         <input type="checkbox" id="privacyConsent" name="privacyConsent" required>
                         <span>
-                            Я ознакомлен(а) и согласен(на) с
+                            Я согласен(на) на обработку моих данных для связи по программе «Теремок».
                             <button type="button" class="link-button" onclick="openPrivacyModal()">
-                                Политикой конфиденциальности
-                            </button>.
+                                Политика конфиденциальности
+                            </button>
                         </span>
                     </label>
                 </div>
@@ -804,7 +804,7 @@
 
                 <p class="form-note">
                     Мы не рассылаем спам и не передаём контакты третьим лицам.
-                    Свяжемся только по поводу офлайн-программы «Теремок».
+                    Свяжемся только по поводу участия в офлайн-программе «Теремок».
                 </p>
             </form>
         </div>
@@ -1189,8 +1189,8 @@
     </div>
 
     <!-- <script src="assets/test.js?v=2.0"></script> -->
-    <script src="assets/app.js?v=2.0"></script>
-    <script src="assets/integration.js?v=1.0"></script>
+    <script src="assets/app.js?v=2.1"></script>
+    <script src="assets/integration.js?v=1.1"></script>
 </body>
 
 </html>

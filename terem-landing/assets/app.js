@@ -362,3 +362,10 @@ function closeModal(modalId) {
 }
 
 
+// Expose functions globally to ensure integration.js can find them
+window.openLeadModal = openLeadModal;
+window.closeLeadModal = closeLeadModal;
+window.openTestModal = openTestModal;
+window.closeTestModal = closeTestModal;
+window.openPrivacyModal = openPrivacyModal;
+window.closePrivacyModal = closePrivacyModal;

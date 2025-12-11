@@ -27,6 +27,18 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
 async function handleContactSubmit(e) {
     e.preventDefault();
 
+    // Spam Protection (Safe Check)
+    try {
+        if (localStorage.getItem('lead_submitted_flag')) {
+            alert('Вы уже отправляли заявку. Переходим к тесту.');
+            if (window.closeLeadModal) window.closeLeadModal();
+            if (window.openTestModal) window.openTestModal();
+            return;
+        }
+    } catch (e) {
+        console.warn('Storage check failed', e);
+    }
+
     const form = e.target;
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
@@ -34,28 +46,18 @@ async function handleContactSubmit(e) {
     // Collect Data
     const formData = new FormData(form);
 
-    // Map to 'LeadRegisterRequest' schema in bot-tg/web/routes.py
     const payload = {
         name: formData.get('name'),
         role: formData.get('role'),
         company: formData.get('company'),
         team_size: formData.get('team_size'),
         email: formData.get('email'),
-
-        // Backend expects 'phone_or_messenger'
         phone_or_messenger: formData.get('phone'),
-
-        // Backend expects 'preferred_channel'
         preferred_channel: formData.get('messenger') || 'telegram',
-
-        // Backend expects 'comment'
         comment: formData.get('request'),
-
         consent: formData.get('privacyConsent') === 'on' || true,
         product: 'teremok',
         source: 'terem_landing',
-
-        // UTM tags if present in URL
         utm_source: new URLSearchParams(window.location.search).get('utm_source') || ''
     };
 
@@ -65,32 +67,32 @@ async function handleContactSubmit(e) {
 
         // Register Lead
         const result = await apiRequest('/lead/register', 'POST', payload);
+        console.log('Registration result:', result);
 
         if (result.status === 'success') {
-            console.log('Lead registered:', result.user_id);
-            if (result.user_id) {
-                sessionStorage.setItem(LEAD_ID_KEY, result.user_id);
+            // Save ID (Safe)
+            try {
+                if (result.user_id) sessionStorage.setItem(LEAD_ID_KEY, result.user_id);
+                localStorage.setItem('lead_submitted_flag', 'true');
+            } catch (err) {
+                console.warn('Storage save failed:', err);
             }
 
-            // Restore button
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-
-            // Close Contact Modal
-            if (typeof closeLeadModal === 'function') closeLeadModal();
-
-            // Open Test Modal
-            if (typeof openTestModal === 'function') openTestModal();
+            // Close Contact Modal & Open Test
+            setTimeout(() => {
+                if (window.closeLeadModal) window.closeLeadModal();
+                if (window.openTestModal) window.openTestModal();
+            }, 100);
 
         } else {
             alert('Ошибка регистрации: ' + (result.message || 'Неизвестная ошибка'));
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
         }
 
     } catch (err) {
         console.error('Submission Error:', err);
         alert('Произошла ошибка при отправке данных. Попробуйте позже.');
+    } finally {
+        // ALWAYS restore button
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }

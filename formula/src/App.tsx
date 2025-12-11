@@ -20,7 +20,7 @@ function App() {
     // Test modal state
     const [showTestModal, setShowTestModal] = useState(false);
     const [testStep, setTestStep] = useState<'registration' | 'test'>('registration');
-    const [testUserContact, setTestUserContact] = useState<UserContact | null>(null);
+    const [, setTestUserContact] = useState<UserContact | null>(null);
 
     const handleConsultationSubmit = async (contact: UserContact) => {
         setIsSubmitting(true);

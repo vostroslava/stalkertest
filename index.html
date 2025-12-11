@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stalker Ecosystem | Единый вход</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="hub.css">
+</head>
+
+<body>
+
+    <!-- Background Elements -->
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+        <div class="globe globe-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-block">
+                <div class="logo-text">Stalker Ecosystem</div>
+                <div class="logo-sub">Продукты по оценке и управлению персоналом</div>
+            </div>
+            <nav class="header-nav">
+                <a href="#about" class="nav-link">О экосистеме</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-container">
+                <h1 class="hero-title">Выберите продукт,<br>с которого начнёте тест</h1>
+                <p class="hero-subtitle">Вход в экосистему Stalker: единый доступ к диагностике «Теремок»,<br>
+                    «Формуле успешной команды» и автоматизированным инструментам.</p>
+
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary">Перейти к продуктам</a>
+                    <a href="#about" class="btn btn-secondary">Узнать об экосистеме</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="products">
+            <div class="container">
+                <div class="products-grid">
+
+                    <!-- Card 1: Teremok -->
+                    <article class="product-card card-teremok">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-badge">Типажи сотрудников</div>
+                            <h2 class="card-title">Теремок: типажи и мотивация</h2>
+                            <p class="card-description">Интерактивный лендинг с описанием мотивационных типажей и
+                                экспресс-диагностикой.</p>
+
+                            <ul class="card-markers">
+                                <li>Типажи</li>
+                                <li>Мини-тест</li>
+                                <li>Кейсы</li>
+                            </ul>
+
+                            <div class="card-action">
+                                <!-- PLACEHOLDER URL: User will update this -->
+                                <a href="./terem-landing/index.html" class="btn btn-card btn-teremok"
+                                    target="_blank">Открыть лендинг</a>
+                                <!-- Optional visual link -->
+                                <!-- <span class="link-visual">О продукте</span> -->
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 2: Formula -->
+                    <article class="product-card card-formula">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-badge">Команда и системность</div>
+                            <h2 class="card-title">Формула успешной команды</h2>
+                            <p class="card-description">Система оценки сотрудников через матрицу системности и работа с
+                                уровнями развития.</p>
+
+                            <ul class="card-markers">
+                                <li>Матрица системности</li>
+                                <li>Оценка</li>
+                                <li>Форматы</li>
+                            </ul>
+
+                            <div class="card-action">
+                                <!-- PLACEHOLDER URL: User will update this -->
+                                <a href="./formula/dist/index.html" class="btn btn-card btn-formula"
+                                    target="_blank">Открыть лендинг</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 3: Bot/Web -->
+                    <article class="product-card card-bot">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-badge">Бот и база данных</div>
+                            <h2 class="card-title">Telegram-бот и веб-интерфейс</h2>
+                            <p class="card-description">Доступ к полным версиям тестов, административной панели и базе
+                                данных кандидатов.</p>
+
+                            <ul class="card-markers">
+                                <li>Полный тест</li>
+                                <li>База данных</li>
+                                <li>CRM</li>
+                            </ul>
+
+                            <div class="card-action">
+                                <!-- PLACEHOLDER URL: User will update this -->
+                                <a href="#" class="btn btn-card btn-bot" target="_blank">Открыть</a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container about-container">
+                <div class="about-text">
+                    <h2 class="about-title">Что такое Stalker Ecosystem?</h2>
+                    <p>Это комплекс взаимосвязанных цифровых продуктов, разработанных для глубинного анализа
+                        HR-процессов. Экосистема объединяет методологию «Теремок» для определения мотивации, матрицу
+                        «Формула успеха» для оценки системности мышления и автоматизированные инструменты сбора данных.
+                        Все тесты и результаты стекаются в единую базу данных для удобного управления кадрами.</p>
+                </div>
+                <div class="about-plaque glass-panel">
+                    <ul class="about-facts">
+                        <li>Единая база данных</li>
+                        <li>Короткий тест на лендинге</li>
+                        <li>Глубокая диагностика в боте</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-copy">Stalker-Media • HR-продукты и диагностика персонала</div>
+            <div class="footer-links">
+                <a href="#">Telegram</a>
+                <a href="#">Instagram</a>
+                <a href="#">Написать в поддержку</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="hub.js"></script>
+</body>
+
+</html>

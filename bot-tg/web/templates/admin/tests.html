@@ -1,0 +1,156 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="mb-8" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1>🧩 Тесты</h1>
+        <p style="color: var(--text-secondary);">Результаты прохождения тестов</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="exportTests()">
+        <i data-feather="download"></i> Экспорт в Google Sheets
+    </button>
+</div>
+
+<!-- Filters -->
+<div class="glass-panel mb-8" style="padding: 24px;">
+    <form method="get" class="grid-cols-4" style="align-items: end; gap: 16px;">
+        <input type="hidden" name="key" value="{{ key or '' }}">
+        <input type="hidden" name="sort_by" value="{{ current_sort_by }}">
+        <input type="hidden" name="sort_order" value="{{ current_sort_order }}">
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Продукт</label>
+            <select name="product"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+                <option value="all" {% if current_product=='all' %}selected{% endif %}>Все продукты</option>
+                <option value="teremok" {% if current_product=='teremok' %}selected{% endif %}>Теремок</option>
+                <option value="formula" {% if current_product=='formula' %}selected{% endif %}>Формула</option>
+            </select>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Тип результата</label>
+            <select name="result_type"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+                <option value="all" {% if current_type=='all' %}selected{% endif %}>Все типы</option>
+                {% for t in all_types %}
+                <option value="{{ t.id }}" {% if current_type==t.id %}selected{% endif %}>{{ t.emoji }} {{ t.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Период (дней)</label>
+            <input type="number" name="days" value="{{ current_days or '' }}" placeholder="Все время"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="height: 42px;">Найти</button>
+    </form>
+</div>
+
+<!-- Tests Table -->
+<div class="glass-panel" style="padding: 0; overflow: hidden;">
+    {% if tests %}
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <a href="?sort_by=created_at&sort_order={% if current_sort_by == 'created_at' and current_sort_order == 'desc' %}asc{% else %}desc{% endif %}&product={{ current_product }}&result_type={{ current_type }}&days={{ current_days }}"
+                            style="display: flex; align-items: center; gap: 4px;">
+                            Дата
+                            {% if current_sort_by == 'created_at' %}
+                            {% if current_sort_order == 'desc' %}↓{% else %}↑{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>Имя / Роль</th>
+                    <th>Результат</th>
+                    <th>Продукт</th>
+                    <th>
+                        <a href="?sort_by=scores&sort_order={% if current_sort_by == 'scores' and current_sort_order == 'desc' %}asc{% else %}desc{% endif %}&product={{ current_product }}&result_type={{ current_type }}&days={{ current_days }}"
+                            style="display: flex; align-items: center; gap: 4px;">
+                            Баллы
+                            {% if current_sort_by == 'scores' %}
+                            {% if current_sort_order == 'desc' %}↓{% else %}↑{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                <tr>
+                    <td style="white-space: nowrap; color: var(--text-secondary);">
+                        {{ test.created_at[:16] }}
+                    </td>
+                    <td>
+                        <div style="font-weight: 500;">{{ test.name or 'Аноним' }}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">{{ test.role or '' }}</div>
+                    </td>
+                    <td>
+                        <span style="font-size: 1.25rem; margin-right: 8px;">{{ test.type_emoji }}</span>
+                        <b>{{ test.type_name or test.result_type }}</b>
+                    </td>
+                    <td>
+                        <span class="badge" style="background: rgba(255,255,255,0.05);">{{ test.product }}</span>
+                    </td>
+                    <td style="font-size: 0.8rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
+                        {{ test.scores_pretty or test.scores }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty">Тестов не найдено</div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function exportTests() {
+        const btn = document.querySelector('button[onclick="exportTests()"]');
+        btn.disabled = true;
+        btn.innerHTML = `<i data-feather="loader" class="spin"></i> Экспорт...`;
+        feather.replace();
+
+        try {
+            // Get key from hidden input
+            const key = document.querySelector('input[name="key"]').value;
+            const url = '/app/admin/api/export/tests' + (key ? `?key=${key}` : '');
+
+            const response = await fetch(url, { method: 'POST' });
+            const data = await response.json();
+
+            if (data.status === 'ok') {
+                alert(`Экспорт успешно выполнен!`); // Backend doesn't return count for tests currently? Or verify.
+            } else {
+                alert('Ошибка экспорта: ' + data.error);
+            }
+        } catch (e) {
+            alert('Ошибка соединения');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i data-feather="download"></i> Экспорт в Google Sheets`;
+            feather.replace();
+        }
+    }
+</script>
+<style>
+    .spin {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}

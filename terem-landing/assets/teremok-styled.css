@@ -1,0 +1,109 @@
+/* Teremok Image Styling - Harmonized with Site Design */
+
+.teremok-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.teremok-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    /* Glassmorphic frame around the image */
+    padding: 1.5rem;
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 20px 60px rgba(139, 92, 246, 0.3),
+        0 0 60px rgba(236, 72, 153, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.teremok-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    /* Multi-layered shadow for depth */
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(139, 92, 246, 0.4),
+        0 0 80px rgba(236, 72, 153, 0.2);
+    /* Subtle glow effect matching site colors */
+    filter: brightness(1.05) contrast(1.05);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.teremok-image:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1) contrast(1.08);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.6),
+        0 0 50px rgba(139, 92, 246, 0.5),
+        0 0 100px rgba(236, 72, 153, 0.3);
+}
+
+/* Accent glow behind the wrapper */
+.teremok-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: radial-gradient(circle at center,
+            rgba(139, 92, 246, 0.15),
+            rgba(236, 72, 153, 0.1),
+            transparent 70%);
+    border-radius: 32px;
+    z-index: -1;
+    opacity: 0.8;
+    animation: pulseGlow 8s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+/* Optional: Subtle float animation inherited from hero-visual-svg */
+.hero-visual-svg {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .teremok-wrapper {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .teremok-image {
+        border-radius: 12px;
+    }
+}

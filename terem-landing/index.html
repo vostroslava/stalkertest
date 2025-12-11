@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Теремок — мотивационная модель для команды</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description"
+        content="Живой офлайн-практикум «Теремок» для собственников, руководителей и HR: как увидеть Птиц, Хомяков, Лис и Профи в команде и перестать тянуть минусовых сотрудников.">
+
+    <!-- Theme colors for mobile browsers -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://teremok.by/">
+    <meta property="og:title" content="Теремок — мотивационная модель для команды">
+    <meta property="og:description"
+        content="Живой офлайн-практикум в Минске. Узнайте, кто в вашей команде: Птицы, Хомяки, Лисы или Профи.">
+    <meta property="og:image" content="assets/teremok-new.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://teremok.by/">
+    <meta property="twitter:title" content="Теремок — мотивационная модель для команды">
+    <meta property="twitter:description"
+        content="Живой офлайн-практикум в Минске. Узнайте, кто в вашей команде: Птицы, Хомяки, Лисы или Профи.">
+    <meta property="twitter:image" content="assets/teremok-new.jpg">
+
+    <link rel="stylesheet" href="assets/style-dark.css?v=2.1">
+    <link rel="stylesheet" href="assets/teremok-styled.css?v=2.1">
+    <link rel="stylesheet" href="assets/mobile-enhancements.css?v=2.1">
+</head>
+
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main" class="skip-link">Перейти к основному содержанию</a>
+
+    <div class="page-wrap">
+
+        <header>
+            <div class="nav">
+                <div class="logo">
+                    <div class="logo-mark">
+                        <img src="assets/logo-teremok.jpg" alt="Теремок логотип" loading="lazy">
+                    </div>
+                    <div class="logo-labels">
+                        <div class="logo-text-primary">Теремок</div>
+                        <div class="logo-text-secondary">мотивационная модель команды</div>
+                    </div>
+                </div>
+
+                <div class="nav-links">
+                    <a href="#about">О программе</a>
+                    <a href="#who">Для кого</a>
+                    <a href="#results">Что получите</a>
+                    <a href="#testimonials">Отзывы</a>
+                    <a href="#experts">Авторы</a>
+                    <a href="#registration">Формат</a>
+                    <a href="javascript:void(0)" class="nav-cta" onclick="openLeadModal('lead')">
+                        Записаться
+                        <span>5–7 минут на заявку</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" aria-label="Открыть меню навигации" aria-expanded="false"
+                    onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Menu Overlay (только визуальное затемнение, не блокирует клики) -->
+        <div class="nav-overlay"></div>
+
+        <main id="main">
+            <!-- Hero -->
+            <section class="section section-dark" id="top">
+                <div class="container">
+                    <div class="hero" data-animate>
+                        <div>
+                            <div class="hero-brand-badge">
+                                <span>Авторская модель «Теремок»</span>
+                            </div>
+
+                            <div class="hero-kicker">Живой офлайн-практикум в Минске для собственников, руководителей и
+                                HR</div>
+                            <h1>«Теремок»: Птицы, Хомяки, Лисы и Профи в вашей команде</h1>
+                            <p class="hero-subtitle">
+                                Помогаем увидеть, кто в вашей компании работает под принуждением, кто — только «за
+                                деньги»,
+                                а кто действительно держит на себе клиентов, процессы и результат.
+                            </p>
+                            <p class="hero-text">
+                                На офлайн-практикуме вы разбираете своих сотрудников через понятные метафоры Птиц,
+                                Хомяков,
+                                Лис и Профи, составляете карту команды и принимаете управленческие решения по людям,
+                                а не по ощущениям и «интуиции о человеке».
+                            </p>
+                            <div class="hero-actions">
+                                <button class="btn-primary" onclick="openLeadModal('lead')">
+                                    Забронировать офлайн-место на «Теремке»
+                                </button>
+                                <button class="btn-secondary" onclick="openLeadModal('test')">
+                                    Пройти мини-тест по одному сотруднику
+                                </button>
+                            </div>
+                            <div class="hero-note">
+                                Оставьте контакты — свяжемся в ближайший рабочий день и пришлём мини-инструкцию по
+                                «Теремку».
+                            </div>
+
+                        </div>
+                        <div class="hero-visual-svg" data-animate>
+                            <div class="teremok-container">
+                                <div class="teremok-wrapper">
+                                    <img src="assets/teremok-new.jpg" alt="Teremok Tower" class="teremok-image">
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About -->
+            <section class="section section-alt" id="about">
+                <div class="container" data-animate>
+                    <div class="section-header">
+                        <div class="section-kicker">О программе</div>
+                        <h2>Что такое мотивационная модель «Теремок»</h2>
+                        <p class="section-lead">
+                            «Теремок» — авторская модель, которая помогает увидеть,
+                            что на самом деле движет вашими сотрудниками и как они ведут себя в команде.
+                            Не абстрактная «мотивация», а живые типажи с понятным поведением.
+                        </p>
+                    </div>
+
+
+
+
+                    <div class="levels-grid">
+                        <!-- Птицы -->
+                        <div class="level-card bird-level" data-modal="modal-bird" data-animate tabindex="0"
+                            role="button" aria-label="Подробнее о типаже Птицы">
+                            <div class="card-header">
+                                <div class="card-icon"><img src="assets/character-bird.png" alt="Птица"></div>
+                                <div class="card-title-block">
+                                    <h3>Птицы</h3>
+                                    <div class="level-subtitle">Мотивация: Принуждение</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="level-traits">
+                                    <li>Работают только под контролем</li>
+                                    <li>Избегают ответственности</li>
+                                    <li>«Забывают» задачи без напоминаний</li>
+                                </ul>
+                                <div class="level-motive">Движущая сила: Страх наказания</div>
+                            </div>
+                        </div>
+
+                        <!-- Хомяки -->
+                        <div class="level-card hamster-level" data-modal="modal-hamster" data-animate tabindex="0"
+                            role="button" aria-label="Подробнее о типаже Хомяки">
+                            <div class="card-header">
+                                <div class="card-icon"><img src="assets/character-hamster.png" alt="Хомяк"></div>
+                                <div class="card-title-block">
+                                    <h3>Хомяки</h3>
+                                    <div class="level-subtitle">Мотивация: Выгода</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="level-traits">
+                                    <li>Фокус только на деньгах</li>
+                                    <li>Равнодушны к целям компании</li>
+                                    <li>Легко уходят к конкурентам</li>
+                                </ul>
+                                <div class="level-motive">Движущая сила: Личная выгода</div>
+                            </div>
+                        </div>
+
+                        <!-- Лисы -->
+                        <div class="level-card fox-level" data-modal="modal-fox" data-animate tabindex="0" role="button"
+                            aria-label="Подробнее о типаже Лисы">
+                            <div class="card-header">
+                                <div class="card-icon"><img src="assets/character-fox.png" alt="Лиса"></div>
+                                <div class="card-title-block">
+                                    <h3>Лисы</h3>
+                                    <div class="level-subtitle">Мотивация: Статус</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="level-traits">
+                                    <li>Мастера интриг и видимости</li>
+                                    <li>Борются за влияние, а не результат</li>
+                                    <li>Создают хаос в коллективе</li>
+                                </ul>
+                                <div class="level-motive">Движущая сила: Власть и признание</div>
+                            </div>
+                        </div>
+
+                        <!-- Профи -->
+                        <div class="level-card pro-level" data-modal="modal-profi" data-animate tabindex="0"
+                            role="button" aria-label="Подробнее о типаже Профи">
+                            <div class="card-header">
+                                <div class="card-icon"><img src="assets/character-profi.png" alt="Профи"></div>
+                                <div class="card-title-block">
+                                    <h3>Профи</h3>
+                                    <div class="level-subtitle">Мотивация: Результат</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="level-traits">
+                                    <li>Берут ответственность на себя</li>
+                                    <li>Держат качество и сроки</li>
+                                    <li>Опора бизнеса и клиентов</li>
+                                </ul>
+                                <div class="level-motive">Движущая сила: Профессионализм</div>
+                            </div>
+                        </div>
+
+                        <!-- Wolf -->
+                        <div class="level-card wolf-level" data-modal="modal-wolf" data-animate tabindex="0"
+                            role="button" aria-label="Подробнее о типаже Волк">
+                            <div class="card-header">
+                                <div class="card-icon"><img src="assets/character-wolf.png" alt="Волк"></div>
+                                <div class="card-title-block">
+                                    <h3>Волк</h3>
+                                    <div class="level-subtitle">Мотивация: Власть</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="level-traits">
+                                    <li>Собирает свою стаю</li>
+                                    <li>Продвигает корыстные цели</li>
+                                    <li>Диктует свои условия</li>
+                                </ul>
+                                <div class="level-motive">Движущая сила: Контроль и доминирование</div>
+                            </div>
+                        </div>
+
+                        <!-- Bear -->
+                        <div class="level-card bear-level" data-modal="modal-bear" data-animate tabindex="0"
+                            role="button" aria-label="Подробнее о типаже Медведь">
+                            <div class="card-header">
+                                <div class="card-icon"><img src="assets/character-bear.png" alt="Медведь"></div>
+                                <div class="card-title-block">
+                                    <h3>Медведь</h3>
+                                    <div class="level-subtitle">Мотивация: Независимость</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="level-traits">
+                                    <li>Исключение из правил</li>
+                                    <li>Опытный, но неуправляемый</li>
+                                    <li>Игнорирует нововведения</li>
+                                </ul>
+                                <div class="level-motive">Движущая сила: Собственная значимость</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Who it's for -->
+            <section class="section section-dark" id="who">
+                <div class="container" data-animate>
+                    <div class="section-header">
+                        <div class="section-kicker">Кому будет полезно</div>
+                        <h2>Для кого программа «Теремок»</h2>
+                        <p class="section-lead">
+                            Программа создана для тех, кто отвечает за людей и результат,
+                            а не только за «красивые отчёты» по HR.
+                        </p>
+                    </div>
+                    <div class="two-cols">
+                        <div class="card">
+                            <h3>Руководители и собственники</h3>
+                            <ul>
+                                <li>Собственники и генеральные директора, которые хотят понимать реальный потенциал
+                                    команды.</li>
+                                <li>Руководители отделов и филиалов, уставшие тащить на себе «тяжёлых» сотрудников.</li>
+                                <li>Руководители по продажам, коммерческие директора и руководители клиентского сервиса,
+                                    которым важно видеть, кто реально делает выручку, а кто только создаёт видимость
+                                    работы.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>HR, рекрутеры и внутренние тренеры</h3>
+                            <ul>
+                                <li>HR-директора, выстраивающие систему оценки, мотивации и развития сотрудников.</li>
+                                <li>Рекрутеры, которым важно отличать Птиц и Хомяков от Профи и будущих лидеров ещё на
+                                    этапе отбора.</li>
+                                <li>Корпоративные тренеры, работающие с вовлечённостью, ответственностью и
+                                    управленческой культурой.</li>
+                            </ul>
+                            <div class="pill-list">
+                                <div class="pill">B2B-компании</div>
+                                <div class="pill">Отделы продаж и сервиса</div>
+                                <div class="pill">Производство и логистика</div>
+                                <div class="pill">Сеть филиалов</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <section class="section section-alt" id="results">
+                <div class="container" data-animate>
+                    <div class="section-header">
+                        <div class="section-kicker">Результат</div>
+                        <h2>Что вы получите после «Теремка»</h2>
+                        <p class="section-lead">
+                            Вместо ощущения «все вроде нормальные, но почему-то не летит»
+                            у вас появляется карта команды и конкретные решения по людям.
+                        </p>
+                    </div>
+                    <div class="grid-3">
+                        <div class="card">
+                            <h3>Карта команды по «Теремку»</h3>
+                            <p>
+                                Вы составите понятную схему: кто в каком типе мотивации,
+                                где ядро, а где риск для результата и репутации.
+                            </p>
+                            <ul>
+                                <li>Птицы, Хомяки, Лисы, Профи, Волки, Медведи;</li>
+                                <li>кто тянет, кто тормозит, кто «сидит тихо»;</li>
+                                <li>на кого делать ставки в ближайший год.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>Алгоритмы управления типажами</h3>
+                            <p>
+                                Для каждого типа вы получите чёткие ориентиры:
+                            </p>
+                            <ul>
+                                <li>как ставить задачи и контролировать;</li>
+                                <li>что усиливает мотивацию, а что ломает;</li>
+                                <li>когда вкладываться, а когда ограничивать и прощаться.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>Решения для бизнеса</h3>
+                            <p>
+                                «Теремок» ложится в кадровые решения, а не в общую философию:
+                            </p>
+                            <ul>
+                                <li>кого продвигать и усиливать;</li>
+                                <li>как менять систему мотивации и ответственности;</li>
+                                <li>какие управленческие привычки руководителей стоит пересмотреть.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="section section-alt" id="testimonials">
+                <div class="container" data-animate>
+                    <div class="section-header">
+                        <div class="section-kicker">Опыт клиентов</div>
+                        <h2>Отзывы руководителей и HR после «Теремка»</h2>
+                        <p class="section-lead">
+                            Реальные кейсы о том, как «Теремок» помогает по-другому смотреть на сотрудников,
+                            переставать тянуть «минусовых» и принимать решения не по ощущениям, а по понятной системе
+                            типажей.
+                        </p>
+                    </div>
+
+                    <div class="testimonials-list">
+                        <div class="testimonial-item">
+                            <button class="testimonial-header" type="button">
+                                <div>
+                                    <div class="testimonial-tag">Отдел продаж</div>
+                                    <div class="testimonial-title">«Перестали тянуть за собой минусовых»</div>
+                                    <div class="testimonial-meta">
+                                        Руководитель отдела продаж, b2b-компания в сфере поставок оборудования (команда
+                                        18 человек)
+                                    </div>
+                                </div>
+                                <span class="testimonial-toggle-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="testimonial-body">
+                                <p>
+                                    «До “Теремка” у меня было ощущение, что я всё время кого-то дотаскиваю. В отчётах
+                                    все выглядели
+                                    “нормально”: кто-то делает план, кто-то чуть не дотягивает, но глобально отличить,
+                                    кто реально
+                                    вытягивает отдел, а кто просто создаёт видимость работы, было сложно.
+                                </p>
+                                <p>
+                                    После практикума мы вместе с тренером разложили сотрудников по типажам “Теремка”.
+                                    Вдруг стало очевидно,
+                                    кто у нас Птицы, кто Хомяки, а кто Профи. Мы убрали фокус со спасения минусовых и
+                                    сделали ставку
+                                    на ядро — Профи и сильных Лидеров. За три месяца я убрал двоих хронических
+                                    “подсаженных на контроль”
+                                    и перераспределил мотивацию. План отдела начали выполнять без постоянного “ручного
+                                    управления”
+                                    и переработок по вечерам.»
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-item">
+                            <button class="testimonial-header" type="button">
+                                <div>
+                                    <div class="testimonial-tag">Собственник бизнеса</div>
+                                    <div class="testimonial-title">«Появились аргументы, а не ощущение “не мой человек”»
+                                    </div>
+                                    <div class="testimonial-meta">
+                                        Собственник сети сервисных компаний, 65+ сотрудников, несколько филиалов
+                                    </div>
+                                </div>
+                                <span class="testimonial-toggle-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="testimonial-body">
+                                <p>
+                                    «До “Теремка” я часто говорил фразу “что-то не то с этим человеком”, но на
+                                    совещаниях это звучало
+                                    как субъективщина. HR оперировал красивыми словами про вовлечённость, а я в итоге
+                                    держал в штате людей,
+                                    к которым не было доверия, просто потому что не мог нормально объяснить, почему они
+                                    мне не подходят.
+                                </p>
+                                <p>
+                                    После программы у нас появился общий язык: Птицы, Хомяки, Лисы, Профи. Мы прогнали
+                                    ключевых
+                                    руководителей и сотрудников через “Шкалу мотивации” и “Теремок”, увидели, кто
+                                    реально за результат,
+                                    а кто — за статус и деньги “любой ценой”. Часть решений, которые я год откладывал,
+                                    приняли за две недели:
+                                    с кем-то расстались, кому-то поменяли зону ответственности. Команда управления стала
+                                    понятнее
+                                    и предсказуемее, исчезло чувство, что бизнес — заложник настроения отдельных людей.»
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-item">
+                            <button class="testimonial-header" type="button">
+                                <div>
+                                    <div class="testimonial-tag">HR-директор</div>
+                                    <div class="testimonial-title">«Наконец-то перестали брать “красавчиков”, которые
+                                        потом не тянут»</div>
+                                    <div class="testimonial-meta">
+                                        HR-директор производственной компании, 220 сотрудников
+                                    </div>
+                                </div>
+                                <span class="testimonial-toggle-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="testimonial-body">
+                                <p>
+                                    «До “Теремка” у нас были приличные воронки найма, но через 3–6 месяцев часть новых
+                                    людей “сдувалась”.
+                                    На собеседованиях кандидаты выглядели отлично: уверенные, разговорчивые, с
+                                    правильными формулировками.
+                                    А в деле оказывалось, что работать надо постоянно подгонять.
+                                </p>
+                                <p>
+                                    После обучения мы встроили типажи “Теремка” прямо в интервью: стали целенаправленно
+                                    отслеживать
+                                    речевые маркеры Птиц, Хомяков и Лис. Перестали очаровываться только харизмой и
+                                    статусной подачей.
+                                    За полгода доля “не дотягивающих” новичков заметно снизилась, а количество Профи в
+                                    ключевых ролях выросло.
+                                    Руководители наконец-то увидели разницу между “приятным собеседником” и человеком, у
+                                    которого
+                                    реально есть внутренняя мотивация работать.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experts as accordion -->
+            <section class="section section-dark" id="experts">
+                <div class="container" data-animate>
+                    <div class="section-header">
+                        <div class="section-kicker">Кому можно доверять</div>
+                        <h2>Кто стоит за «Теремком»</h2>
+                        <p class="section-lead">
+                            Модель и программа разработаны и ведутся командой консалтинговой компании «Сталкер-Медиа»,
+                            которая с 2009 года профессионально отвечает на вопрос:
+                            «На кого из сотрудников делать ставки?».
+                        </p>
+                    </div>
+
+                    <div class="testimonials-list experts-list">
+                        <div class="testimonial-item">
+                            <button class="testimonial-header expert-header" type="button">
+                                <div class="expert-avatar">
+                                    <img src="assets/expert-andrey.jpg" alt="Андрей Гриневич" loading="lazy">
+                                </div>
+                                <div class="expert-info">
+                                    <div class="testimonial-tag">Автор модели</div>
+                                    <div class="testimonial-title">Андрей Гриневич</div>
+                                    <div class="testimonial-meta">
+                                        Соучредитель и тренер «Сталкер-Медиа» с 2009 года
+                                    </div>
+                                </div>
+                                <span class="testimonial-toggle-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="testimonial-body">
+                                <p class="expert-role">
+                                    Главный консультант и аналитик по управлению человеческими ресурсами.
+                                </p>
+                                <p>
+                                    Автор мотивационной модели «Теремок», «Шкалы профессионализма»,
+                                    технологии «Матрица системности» и ряда опросников по оценке персонала.
+                                </p>
+                                <p>
+                                    С 2015 года провёл более 2200 персональных консультаций для собственников и
+                                    руководителей.
+                                    Помогает принимать кадровые решения не «по ощущению», а на основе системной
+                                    диагностики
+                                    мотивации и потенциала сотрудников.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-item">
+                            <button class="testimonial-header expert-header" type="button">
+                                <div class="expert-avatar">
+                                    <img src="assets/expert-natalia.jpg" alt="Наталья Космач" loading="lazy">
+                                </div>
+                                <div class="expert-info">
+                                    <div class="testimonial-tag">Ведущий программы</div>
+                                    <div class="testimonial-title">Наталья Космач</div>
+                                    <div class="testimonial-meta">
+                                        Собственник, директор и бизнес-тренер компании «Сталкер-Медиа»
+                                    </div>
+                                </div>
+                                <span class="testimonial-toggle-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="testimonial-body">
+                                <p class="expert-role">
+                                    Автор более 17 обучающих программ по найму, мотивации, управленческим компетенциям,
+                                    продажам и переговорам.
+                                </p>
+                                <p>
+                                    С 2017 года лично провела более 2300 интервью и диагностик ключевых сотрудников и
+                                    кандидатов.
+                                    Специализируется на управленческих решениях по людям: подбор, развитие, продвижение,
+                                    разделение с сотрудниками.
+                                </p>
+                                <p>
+                                    На «Теремке» Наталья ведёт живой практикум, помогает участникам разложить своих
+                                    сотрудников по типажам
+                                    и перевести результат в конкретные управленческие действия.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-item">
+                            <button class="testimonial-header expert-header" type="button">
+                                <div class="expert-avatar">
+                                    <img src="assets/logo-teremok.jpg" alt="Теремок логотип" loading="lazy">
+                                </div>
+                                <div class="expert-info">
+                                    <div class="testimonial-tag">Консалтинговая компания</div>
+                                    <div class="testimonial-title">«Сталкер-Медиа» в цифрах</div>
+                                    <div class="testimonial-meta">
+                                        Консалтинг и обучение для бизнеса с 2009 года
+                                    </div>
+                                </div>
+                                <span class="testimonial-toggle-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="testimonial-body">
+                                <ul class="metrics-list">
+                                    <li>770+ обучающих программ и тренингов для бизнеса;</li>
+                                    <li>7000+ руководителей и сотрудников, прошедших обучение;</li>
+                                    <li>4500+ аудитов персонала и консультаций по потенциалу и развитию;</li>
+                                    <li>клиенты в Беларуси, России и других странах.</li>
+                                </ul>
+                                <p class="highlight">
+                                    Коротко: мы много лет профессионально работаем с управленческими решениями по людям
+                                    —
+                                    кого выращивать, кого продвигать, кого отпускать.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Registration / CTA -->
+            <section class="section section-alt" id="registration">
+                <div class="container" data-animate>
+                    <div class="section-header">
+                        <div class="section-kicker">Заявка на участие</div>
+                        <h2>Оставьте контакты — забронируем офлайн-участие и обсудим детали</h2>
+                        <p class="section-lead">
+                            Заполните короткую заявку во всплывающем окне. Мы свяжемся с вами в ближайший рабочий день,
+                            уточним ситуацию по вашей команде и подтвердим участие в ближайшем офлайн-потоке программы
+                            «Теремок».
+                        </p>
+                    </div>
+                    <div class="form-wrapper">
+
+                        <div class="event-card">
+                            <div class="event-label">Ближайший поток «Теремка»</div>
+                            <div class="event-title">Живой офлайн-практикум в Минске</div>
+
+                            <div class="event-details">
+                                <div class="event-detail-row">
+                                    <span>Дата и время</span>
+                                    <strong>18 декабря 2025, 10:00–18:00</strong>
+                                </div>
+                                <div class="event-detail-row">
+                                    <span>Формат</span>
+                                    <strong>Минск, очный практикум + работа с вашей командой</strong>
+                                </div>
+                                <div class="event-detail-row">
+                                    <span>Количество участников</span>
+                                    <strong>Один поток, ограниченное число мест</strong>
+                                </div>
+                            </div>
+
+                            <div class="event-note">
+                                На практикум берём ограниченное количество руководителей и HR, чтобы успеть
+                                разобрать реальные кейсы по вашим людям и составить карту команды.
+                            </div>
+
+                            <div class="event-countdown">
+                                <div class="event-countdown-label">
+                                    До старта потока осталось:
+                                    <span id="eventCountdownText">идёт расчёт…</span>
+                                </div>
+                                <div class="event-countdown-bar">
+                                    <div class="event-countdown-fill" id="eventCountdownFill"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-grid">
+                            <div>
+                                <p class="form-secondary">
+                                    Нажмите на кнопку ниже, чтобы открыть форму заявки. Мы спросим только то, что
+                                    действительно
+                                    нужно для предметного разговора: кто вы, какая команда и как с вами связаться.
+                                </p>
+                                <button type="button" class="btn-primary btn-full" onclick="openLeadModal('lead')">
+                                    Открыть форму заявки
+                                </button>
+                                <p class="form-note">
+                                    После отправки заявки:
+                                </p>
+                                <ul class="metrics-list">
+                                    <li>мы свяжемся в ближайший рабочий день, уточним вашу ситуацию по людям и
+                                        подтвердим офлайн-участие в «Теремке»;</li>
+                                    <li>на сайте автоматически откроется мини-тест по одному сотруднику — чтобы вы
+                                        почувствовали, как работает модель.</li>
+                                </ul>
+                            </div>
+                            <div class="form-secondary">
+                                <div class="telegram-card">
+                                    <div class="telegram-icon">
+                                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="white">
+                                            <path
+                                                d="M21.5 4.2c.3-.97-.58-1.84-1.54-1.5L3.3 9.1c-.71.26-.77 1.24-.1 1.6l4.5 2.34 2.1 4.77c.3.68 1.26.71 1.6.05l2.02-3.82 4.24 2.2c.83.43 1.83-.03 2.06-.93l1.78-7.91Z" />
+                                        </svg>
+                                    </div>
+                                    <div class="telegram-content">
+                                        <div class="telegram-title">Написать в Telegram</div>
+                                        <p>Если вам удобнее обсудить запрос в переписке, напишите нам сообщение с
+                                            пометкой «Теремок».</p>
+                                        <a class="telegram-button" href="https://t.me/stalkermedia1"
+                                            target="_blank">Перейти
+                                            в Telegram</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-inner">
+                <small>© «Сталкер-Медиа». Программа «Теремок» — мотивационная модель для управления командой.
+                    Офлайн-практикум в Минске.</small>
+                <small>
+                    <a href="javascript:void(0)" onclick="openPrivacyModal()">Политика конфиденциальности</a>
+                    &nbsp;·&nbsp;
+                    <a href="#top">Наверх</a>
+                </small>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно заявки -->
+    <div class="modal-backdrop" id="leadModal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeLeadModal()"></div>
+
+        <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" type="button" onclick="closeLeadModal()">×</button>
+
+            <div id="testAccessBanner" class="test-access-banner" style="display:none;">
+                ТЕСТ ДОСТУПЕН ТОЛЬКО ПОСЛЕ РЕГИСТРАЦИИ
+            </div>
+
+            <h2 id="modalTitle">Заявка на офлайн-программу «Теремок»</h2>
+            <p class="modal-subtitle">
+                Оставьте контакты и кратко опишите вашу команду. Мы свяжемся в ближайший рабочий день,
+                подтвердим участие в живом практикуме в Минске и зададим несколько вопросов о ваших сотрудниках.
+                После отправки заявки на сайте автоматически откроется мини-тест по одному сотруднику.
+            </p>
+
+            <form id="leadForm">
+                <div class="field-group">
+                    <label for="name">Имя <span class="required">*</span></label>
+                    <input class="input" type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
+                </div>
+
+                <div class="field-group">
+                    <label for="role">Ваша роль <span class="required">*</span></label>
+                    <select class="select" id="role" name="role" required>
+                        <option value="" disabled selected>Выберите вариант</option>
+                        <option value="owner">Собственник / генеральный директор</option>
+                        <option value="head">Руководитель отдела / филиала</option>
+                        <option value="hr">HR / рекрутер</option>
+                        <option value="sales">Руководитель отдела продаж</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label for="company">Компания</label>
+                    <input class="input" type="text" id="company" name="company" placeholder="Название компании">
+                </div>
+
+                <div class="field-group">
+                    <label for="team_size">Размер команды</label>
+                    <input class="input" type="text" id="team_size" name="team_size"
+                        placeholder="Например: 25 человек, отдел продаж 8 человек">
+                </div>
+
+                <div class="field-group">
+                    <label for="phone">Телефон <span class="required">*</span></label>
+                    <input class="input" type="tel" id="phone" name="phone" placeholder="+375 (__) ___-__-__" required>
+                    <div class="field-hint">
+                        Номер нужен, чтобы связаться с вами в удобном мессенджере и подтвердить офлайн-участие.
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="messenger">Удобный мессенджер</label>
+                    <select class="select" id="messenger" name="messenger">
+                        <option value="" disabled selected>Выберите вариант</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="viber">Viber</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label for="email">E-mail</label>
+                    <input class="input" type="email" id="email" name="email"
+                        placeholder="при необходимости отправки деталей по участию">
+                </div>
+
+                <div class="field-group">
+                    <label for="request">Ваш запрос (кратко)</label>
+                    <textarea id="request" name="request"
+                        placeholder="С чем хотите поработать на «Теремке» — команда, вовлечённость, подбор, управленческие решения и т.п."></textarea>
+                </div>
+
+                <div class="field-group">
+                    <label class="consent-label">
+                        <input type="checkbox" id="privacyConsent" required>
+                        <span>
+                            Я ознакомлен(а) и согласен(на) с
+                            <button type="button" class="link-button" onclick="openPrivacyModal()">Политикой
+                                конфиденциальности</button>.
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary btn-full">
+                    Отправить заявку и перейти к мини-тесту
+                </button>
+
+                <p class="form-note">
+                    Мы не рассылаем спам и не передаём контакты третьим лицам.
+                    Свяжемся только по поводу офлайн-программы «Теремок».
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно с мини-тестом -->
+    <div class="modal-backdrop" id="testModal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeTestModal()"></div>
+
+        <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="testModalTitle">
+            <button class="modal-close" type="button" onclick="closeTestModal()">×</button>
+
+            <h2 id="testModalTitle">Мини-тест по одному сотруднику</h2>
+            <p class="modal-subtitle">
+                Выберите одного конкретного сотрудника и отвечайте, как он ведёт себя чаще всего.
+                Это упрощённый мини-тест: по результатам вы увидите, к какому типажу «Теремка» он ближе.
+                На офлайн-программе мы работаем уже со всей вашей командой.
+            </p>
+
+            <div id="testContainer">
+                <div class="test-progress">
+                    <div class="test-progress-bar" id="testProgressBar"></div>
+                </div>
+                <div id="testQuestionCard" class="test-question-card">
+                    <!-- Dynamic Question Content will be injected here -->
+                </div>
+            </div>
+
+            <div id="testResultContainer" style="display: none;">
+                <!-- Dynamic Result Content will be injected here -->
+            </div>
+
+            <div id="testTelegramBlock" class="telegram-card" style="display:none; margin-top: 20px;">
+                <div class="telegram-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white">
+                        <path
+                            d="M21.5 4.2c.3-.97-.58-1.84-1.54-1.5L3.3 9.1c-.71.26-.77 1.24-.1 1.6l4.5 2.34 2.1 4.77c.3.68 1.26.71 1.6.05l2.02-3.82 4.24 2.2c.83.43 1.83-.03 2.06-.93l1.78-7.91Z" />
+                    </svg>
+                </div>
+                <div class="telegram-content">
+                    <div class="telegram-title">Посмотрите видео-разбор</div>
+                    <p>Мы подготовили видео, где подробно разбираем этот типаж. Напишите менеджеру слово "Разбор".</p>
+                    <a class="telegram-button" href="https://t.me/stalkermedia1" target="_blank">Связаться с
+                        менеджером</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с политикой конфиденциальности -->
+    <div class="modal-backdrop" id="privacyModal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closePrivacyModal()"></div>
+
+        <div class="modal-window policy-window" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+            <button class="modal-close" type="button" onclick="closePrivacyModal()">×</button>
+
+            <h2 id="privacyModalTitle">Политика конфиденциальности</h2>
+
+            <iframe class="policy-frame" src="privacy-policy.html" title="Политика конфиденциальности"></iframe>
+        </div>
+    </div>
+
+
+
+    <!-- Модальные окна для типажей сотрудников -->
+
+    <!-- Птица -->
+    <div class="modal-backdrop" id="modal-bird" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-bird')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-bird')">×</button>
+
+            <h2>🐦 Птица</h2>
+            <p class="modal-subtitle">Движущая сила: Страх наказания</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Работает только под жёстким контролем. Без дедлайнов и напоминаний «забывает» о задачах. Избегает
+                    ответственности и инициативы. При ослаблении контроля «проседает».</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Хомяк -->
+    <div class="modal-backdrop" id="modal-hamster" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-hamster')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-hamster')">×</button>
+
+            <h2>🐹 Хомяк</h2>
+            <p class="modal-subtitle">Движущая сила: Личная выгода</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Рассматривает работу исключительно как источник ресурсов. Лоялен не компании, а своему кошельку.
+                    Работает ровно столько, сколько оплачивается — не больше.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Лиса -->
+    <div class="modal-backdrop" id="modal-fox" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-fox')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-fox')">×</button>
+
+            <h2>🦊 Лиса</h2>
+            <p class="modal-subtitle">Движущая сила: Власть и признание</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Ориентирован на власть, влияние и статус. Мастер создавать видимость работы и плести интриги. Хорошо
+                    выглядит на совещаниях, но реальный вклад нестабилен.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Профи -->
+    <div class="modal-backdrop" id="modal-profi" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-profi')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-profi')">×</button>
+
+            <h2>🦁 Профи</h2>
+            <p class="modal-subtitle">Движущая сила: Профессионализм</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Сотрудник, который болеет за дело. Берет ответственность, держит качество, ищет решения. Сам следит
+                    за сроками и деталями. Стабильно держит уровень.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Лидер -->
+    <div class="modal-backdrop" id="modal-leader" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-leader')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-leader')">×</button>
+
+            <h2>🦅 Лидер</h2>
+            <p class="modal-subtitle">Движущая сила: Смысл и миссия</p>
+
+            <div class="modal-section">
+                ```
+            </div>
+
+            <div class="field-group">
+                <label for="phone">Телефон <span class="required">*</span></label>
+                <input class="input" type="tel" id="phone" name="phone" placeholder="+375 (__) ___-__-__" required>
+                <div class="field-hint">
+                    Номер нужен, чтобы связаться с вами в удобном мессенджере и подтвердить офлайн-участие.
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="messenger">Удобный мессенджер</label>
+                <select class="select" id="messenger" name="messenger">
+                    <option value="" disabled selected>Выберите вариант</option>
+                    <option value="telegram">Telegram</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="viber">Viber</option>
+                    <option value="other">Другое</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label for="email">E-mail</label>
+                <input class="input" type="email" id="email" name="email"
+                    placeholder="при необходимости отправки деталей по участию">
+            </div>
+
+            <div class="field-group">
+                <label for="request">Ваш запрос (кратко)</label>
+                <textarea id="request" name="request"
+                    placeholder="С чем хотите поработать на «Теремке» — команда, вовлечённость, подбор, управленческие решения и т.п."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label class="consent-label">
+                    <input type="checkbox" id="privacyConsent" required>
+                    <span>
+                        Я ознакомлен(а) и согласен(на) с
+                        <button type="button" class="link-button" onclick="openPrivacyModal()">Политикой
+                            конфиденциальности</button>.
+                    </span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-primary btn-full">
+                Отправить заявку и перейти к мини-тесту
+            </button>
+
+            <p class="form-note">
+                Мы не рассылаем спам и не передаём контакты третьим лицам.
+                Свяжемся только по поводу офлайн-программы «Теремок».
+            </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно с мини-тестом -->
+    <div class="modal-backdrop" id="testModal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeTestModal()"></div>
+
+        <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="testModalTitle">
+            <button class="modal-close" type="button" onclick="closeTestModal()">×</button>
+
+            <h2 id="testModalTitle">Мини-тест по одному сотруднику</h2>
+            <p class="modal-subtitle">
+                Выберите одного конкретного сотрудника и отвечайте, как он ведёт себя чаще всего.
+                Это упрощённый мини-тест: по результатам вы увидите, к какому типажу «Теремка» он ближе.
+                На офлайн-программе мы работаем уже со всей вашей командой.
+            </p>
+
+            <div id="testContainer">
+                <div class="test-progress">
+                    <div class="test-progress-bar" id="testProgressBar"></div>
+                </div>
+                <div id="testQuestionCard" class="test-question-card">
+                    <!-- Dynamic Question Content will be injected here -->
+                </div>
+            </div>
+
+            <div id="testResultContainer" style="display: none;">
+                <!-- Dynamic Result Content will be injected here -->
+            </div>
+
+            <div id="testTelegramBlock" class="telegram-card" style="display:none; margin-top: 20px;">
+                <div class="telegram-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white">
+                        <path
+                            d="M21.5 4.2c.3-.97-.58-1.84-1.54-1.5L3.3 9.1c-.71.26-.77 1.24-.1 1.6l4.5 2.34 2.1 4.77c.3.68 1.26.71 1.6.05l2.02-3.82 4.24 2.2c.83.43 1.83-.03 2.06-.93l1.78-7.91Z" />
+                    </svg>
+                </div>
+                <div class="telegram-content">
+                    <div class="telegram-title">Посмотрите видео-разбор</div>
+                    <p>Мы подготовили видео, где подробно разбираем этот типаж. Напишите менеджеру слово "Разбор".</p>
+                    <a class="telegram-button" href="https://t.me/stalkermedia1" target="_blank">Связаться с
+                        менеджером</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с политикой конфиденциальности -->
+    <div class="modal-backdrop" id="privacyModal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closePrivacyModal()"></div>
+
+        <div class="modal-window policy-window" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+            <button class="modal-close" type="button" onclick="closePrivacyModal()">×</button>
+
+            <h2 id="privacyModalTitle">Политика конфиденциальности</h2>
+
+            <iframe class="policy-frame" src="privacy-policy.html" title="Политика конфиденциальности"></iframe>
+        </div>
+    </div>
+
+
+
+    <!-- Модальные окна для типажей сотрудников -->
+
+    <!-- Птица -->
+    <div class="modal-backdrop" id="modal-bird" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-bird')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-bird')">×</button>
+
+            <h2>🐦 Птица</h2>
+            <p class="modal-subtitle">Движущая сила: Страх наказания</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Работает только под жёстким контролем. Без дедлайнов и напоминаний «забывает» о задачах. Избегает
+                    ответственности и инициативы. При ослаблении контроля «проседает».</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Хомяк -->
+    <div class="modal-backdrop" id="modal-hamster" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-hamster')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-hamster')">×</button>
+
+            <h2>🐹 Хомяк</h2>
+            <p class="modal-subtitle">Движущая сила: Личная выгода</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Рассматривает работу исключительно как источник ресурсов. Лоялен не компании, а своему кошельку.
+                    Работает ровно столько, сколько оплачивается — не больше.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Лиса -->
+    <div class="modal-backdrop" id="modal-fox" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-fox')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-fox')">×</button>
+
+            <h2>🦊 Лиса</h2>
+            <p class="modal-subtitle">Движущая сила: Власть и признание</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Ориентирован на власть, влияние и статус. Мастер создавать видимость работы и плести интриги. Хорошо
+                    выглядит на совещаниях, но реальный вклад нестабилен.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Профи -->
+    <div class="modal-backdrop" id="modal-profi" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-profi')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-profi')">×</button>
+
+            <h2>🦁 Профи</h2>
+            <p class="modal-subtitle">Движущая сила: Профессионализм</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Сотрудник, который болеет за дело. Берет ответственность, держит качество, ищет решения. Сам следит
+                    за сроками и деталями. Стабильно держит уровень.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Лидер -->
+    <div class="modal-backdrop" id="modal-leader" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-leader')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-leader')">×</button>
+
+            <h2>🦅 Лидер</h2>
+            <p class="modal-subtitle">Движущая сила: Смысл и миссия</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Развивает бизнес как свой. Ведет за собой команду, генерирует прорывные решения. Вдохновлен идеей и
+                    миссией, а не только деньгами или статусом.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Волк -->
+    <div class="modal-backdrop" id="modal-wolf" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-wolf')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-wolf')">×</button>
+
+            <h2>🐺 Волк</h2>
+            <p class="modal-subtitle">Движущая сила: Контроль и доминирование</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Собирает вокруг себя «стаю» последователей, продвигает собственные цели под видом общих интересов.
+                    Диктует свои условия, игнорирует корпоративные правила. Может создавать параллельную систему власти
+                    в компании.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Медведь -->
+    <div class="modal-backdrop" id="modal-bear" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal('modal-bear')"></div>
+        <div class="modal-window" role="dialog" aria-modal="true">
+            <button class="modal-close" type="button" onclick="closeModal('modal-bear')">×</button>
+
+            <h2>🐻 Медведь</h2>
+            <p class="modal-subtitle">Движущая сила: Собственная значимость</p>
+
+            <div class="modal-section">
+                <h3>Характеристика</h3>
+                <p>Опытный специалист, который считает себя исключением из правил. Игнорирует нововведения и
+                    корпоративные стандарты, опираясь на свой опыт. Неуправляемый, но обладает ценными компетенциями.
+                    Работает «как привык», а не как требуется.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="assets/test.js?v=2.0"></script> -->
+    <script src="assets/app.js?v=2.0"></script>
+    <script src="assets/integration.js?v=1.0"></script>
+</body>
+
+</html>
+```

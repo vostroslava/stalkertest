@@ -1,0 +1,219 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="mb-8" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1>👥 Лиды</h1>
+        <p style="color: var(--text-secondary);">Управление заявками пользователей</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="exportLeads()">
+        <i data-feather="download"></i> Экспорт в Google Sheets
+    </button>
+</div>
+
+<!-- Filters -->
+<div class="glass-panel mb-8" style="padding: 24px;">
+    <form method="get" class="grid-cols-4" style="align-items: end; gap: 16px;">
+        <input type="hidden" name="key" value="{{ key or '' }}">
+        <input type="hidden" name="sort_by" value="{{ current_sort_by }}">
+        <input type="hidden" name="sort_order" value="{{ current_sort_order }}">
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Статус</label>
+            <select name="status"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+                <option value="all" {% if current_status=='all' %}selected{% endif %}>Все статусы</option>
+                <option value="new" {% if current_status=='new' %}selected{% endif %}>Новые</option>
+                <option value="in_progress" {% if current_status=='in_progress' %}selected{% endif %}>В работе</option>
+                <option value="done" {% if current_status=='done' %}selected{% endif %}>Завершенные</option>
+                <option value="spam" {% if current_status=='spam' %}selected{% endif %}>Спам</option>
+            </select>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Период (дней)</label>
+            <input type="number" name="days" value="{{ current_days or '' }}" placeholder="Все время"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Поиск</label>
+            <input type="text" name="search" value="{{ current_search or '' }}" placeholder="Имя, телефон..."
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="height: 42px;">Найти</button>
+    </form>
+</div>
+
+<!-- Leads Table -->
+<div class="glass-panel" style="padding: 0; overflow: hidden;">
+    {% if leads %}
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <a href="?sort_by=created_at&sort_order={% if current_sort_by == 'created_at' and current_sort_order == 'desc' %}asc{% else %}desc{% endif %}&status={{ current_status }}&search={{ current_search }}&days={{ current_days }}"
+                            style="display: flex; align-items: center; gap: 4px;">
+                            Дата
+                            {% if current_sort_by == 'created_at' %}
+                            {% if current_sort_order == 'desc' %}↓{% else %}↑{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>Имя / Роль</th>
+                    <th>Контакты</th>
+                    <th>Компания</th>
+                    <th>Продукт</th>
+                    <th>
+                        <a href="?sort_by=status&sort_order={% if current_sort_by == 'status' and current_sort_order == 'desc' %}asc{% else %}desc{% endif %}&status={{ current_status }}&search={{ current_search }}&days={{ current_days }}"
+                            style="display: flex; align-items: center; gap: 4px;">
+                            Статус
+                            {% if current_sort_by == 'status' %}
+                            {% if current_sort_order == 'desc' %}↓{% else %}↑{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>Заметки</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr id="row-{{ lead.user_id }}">
+                    <td style="white-space: nowrap; color: var(--text-secondary);">
+                        {{ lead.created_at[:16] }}
+                    </td>
+                    <td>
+                        <div style="font-weight: 600;">{{ lead.name }}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">{{ lead.role }}</div>
+                    </td>
+                    <td>
+                        <div style="margin-bottom: 4px;">{{ lead.phone }}</div>
+                        {% if lead.telegram_username %}
+                        <a href="https://t.me/{{ lead.telegram_username }}" target="_blank"
+                            style="color: var(--text-accent); font-size: 0.8rem;">
+                            @{{ lead.telegram_username }}
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div>{{ lead.company or '-' }}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">{{ lead.team_size }}</div>
+                    </td>
+                    <td>
+                        <span class="badge" style="background: rgba(255,255,255,0.05);">{{ lead.product }}</span>
+                    </td>
+                    <td>
+                        <select onchange="updateStatus({{ lead.user_id }}, this.value)"
+                            style="padding: 4px; border-radius: 4px; background: transparent; color: white; border: 1px solid var(--border-color);">
+                            <option value="new" {% if lead.status=='new' %}selected{% endif %}>Новый</option>
+                            <option value="in_progress" {% if lead.status=='in_progress' %}selected{% endif %}>В работе
+                            </option>
+                            <option value="done" {% if lead.status=='done' %}selected{% endif %}>Завершен</option>
+                            <option value="spam" {% if lead.status=='spam' %}selected{% endif %}>Спам</option>
+                        </select>
+                    </td>
+                    <td>
+                        <textarea onblur="updateNotes({{ lead.user_id }}, this.value)" rows="1" placeholder="Заметка..."
+                            style="background: transparent; border: none; color: var(--text-secondary); resize: vertical; width: 100%;">{{ lead.notes or '' }}</textarea>
+                    </td>
+                    <td>
+                        <button onclick="copyToClipboard('{{ lead.name }} {{ lead.phone }}')" class="btn"
+                            style="padding: 4px; color: var(--text-secondary);" title="Копировать контакт">
+                            <i data-feather="copy" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty">Лидов не найдено</div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function updateStatus(userId, status) {
+        try {
+            const response = await fetch(`/app/admin/api/lead/${userId}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: status })
+            });
+
+            if (response.ok) {
+                // Show toast or highlight row
+                const batch = document.querySelector(`#row-${userId} .badge`);
+                // simplistic feedback
+            }
+        } catch (e) {
+            alert('Ошибка обновления статуса');
+        }
+    }
+
+    async function updateNotes(userId, notes) {
+        try {
+            await fetch(`/app/admin/api/lead/${userId}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ notes: notes }) // Server should merge updates usually, check implementation
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function exportLeads() {
+        const btn = document.querySelector('button[onclick="exportLeads()"]');
+        btn.disabled = true;
+        btn.innerHTML = `<i data-feather="loader" class="spin"></i> Экспорт...`;
+        feather.replace();
+
+        try {
+            // Get key from hidden input
+            const key = document.querySelector('input[name="key"]').value;
+            const url = '/app/admin/api/export/leads' + (key ? `?key=${key}` : '');
+
+            const response = await fetch(url, { method: 'POST' });
+            const data = await response.json();
+
+            if (data.status === 'ok') {
+                alert(`Экспортировано ${data.count} лидов в Google Sheets!`);
+            } else {
+                alert('Ошибка экспорта: ' + data.error);
+            }
+        } catch (e) {
+            alert('Ошибка соединения');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i data-feather="download"></i> Экспорт в Google Sheets`;
+            feather.replace();
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text);
+    }
+</script>
+<style>
+    .spin {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}

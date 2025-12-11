@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ type_info.name }} | Результат теста</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --text: #f0f0f5;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --accent: #667eea;
+            --accent-light: #9f7aea;
+            --success: #48bb78;
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: var(--text);
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Hero Type Card */
+        .type-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            margin-bottom: 24px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .type-emoji {
+            font-size: 80px;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: bounce 0.8s ease;
+        }
+
+        .type-title {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .type-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .type-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #eee;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        /* Marker icons */
+        .marker-li::before {
+            content: '👁';
+            position: absolute;
+            left: 0;
+        }
+
+        .minus-li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+        }
+
+        .tip-li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        /* Chart */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .chart-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .chart-emoji {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .chart-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .chart-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* CTA */
+        .cta-block {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(159, 122, 234, 0.2));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-text {
+            margin-bottom: 16px;
+            color: #eee;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="type-card">
+            <div class="type-title">Ваш типаж:</div>
+            <div class="type-emoji">{{ type_info.emoji }}</div>
+            <div class="type-name">{{ type_info.name }}</div>
+            <div class="type-desc">{{ type_info.short_description }}</div>
+        </div>
+
+        <!-- Owner View -->
+        {% if type_info.owner_view %}
+        <div class="section">
+            <div class="section-title">👁 Взгляд собственника</div>
+            <div class="content-card">
+                <p style="color: #e0e0e0; line-height: 1.5;">{{ type_info.owner_view }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Risks -->
+        {% if type_info.risks %}
+        <div class="section">
+            <div class="section-title">⚠️ Риски</div>
+            <div class="content-card">
+                <ul>
+                    {% for item in type_info.risks %}
+                    <li class="minus-li">{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recommendations -->
+        {% if type_info.recommendations %}
+        <div class="section">
+            <div class="section-title">💡 Рекомендации</div>
+            <div class="content-card">
+                <ul>
+                    {% for item in type_info.recommendations %}
+                    <li class="tip-li">{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Chart -->
+        <div class="section">
+            <div class="section-title">📊 Ваши баллы</div>
+            <div class="chart-grid">
+                {% for t in all_types %}
+                <div class="chart-item">
+                    <div class="chart-emoji">{{ t.emoji }}</div>
+                    <div class="chart-val">{{ scores.get(t.code, 0) | round }}</div>
+                    <div class="chart-label">{{ t.name }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-block">
+            <p class="cta-text">
+                Нужна помощь в управлении такими сотрудниками?
+            </p>
+            <a href="https://t.me/vostroslava" class="btn">
+                Обсудить с экспертом
+            </a>
+            <a href="/app/hub" class="btn btn-secondary">
+                Вернуться в меню
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // Use Telegram WebApp to expand
+        window.Telegram?.WebApp?.expand();
+    </script>
+</body>
+
+</html>

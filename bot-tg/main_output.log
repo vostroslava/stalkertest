@@ -1,0 +1,667 @@
+🤖 Бот запускается...
+2025-12-07 17:53:49,118 - aiogram.dispatcher - INFO - Start polling
+INFO:     Started server process [21421]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🌍 Web App запускается на http://0.0.0.0:8000
+2025-12-07 17:53:49,809 - aiogram.dispatcher - INFO - Run polling for bot @teremok_manager_bot id=8200223342 - 'Теремок Симулятор Менеджера'
+2025-12-07 17:54:06,378 - web.admin_routes - INFO - Admin dashboard accessed from 127.0.0.1
+INFO:     127.0.0.1:57449 - "GET /app/admin/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57449 - "GET /static/css/admin_theme.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57755 - "GET /app/admin/dashboard HTTP/1.1" 303 See Other
+🤖 Бот запускается...
+2025-12-07 18:02:57,534 - aiogram.dispatcher - INFO - Start polling
+INFO:     Started server process [21839]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🌍 Web App запускается на http://0.0.0.0:8000
+2025-12-07 18:02:58,215 - aiogram.dispatcher - INFO - Run polling for bot @teremok_manager_bot id=8200223342 - 'Теремок Симулятор Менеджера'
+2025-12-07 18:03:17,098 - web.admin_routes - INFO - Admin dashboard accessed from 127.0.0.1
+INFO:     127.0.0.1:57815 - "GET /app/admin/dashboard HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 147, in admin_dashboard
+    stats = await user_service.get_statistics()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/services/user_service.py", line 46, in get_statistics
+    return await self.user_repo.get_statistics(days)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/repositories/user_repository.py", line 126, in get_statistics
+    date_7d = (datetime.now() - datetime.timedelta(days=7)).isoformat()
+                                ^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'datetime.datetime' has no attribute 'timedelta'
+🤖 Бот запускается...
+2025-12-07 18:04:28,304 - aiogram.dispatcher - INFO - Start polling
+INFO:     Started server process [21975]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🌍 Web App запускается на http://0.0.0.0:8000
+2025-12-07 18:04:29,049 - aiogram.dispatcher - INFO - Run polling for bot @teremok_manager_bot id=8200223342 - 'Теремок Симулятор Менеджера'
+🤖 Бот запускается...
+2025-12-07 18:06:44,752 - aiogram.dispatcher - INFO - Start polling
+INFO:     Started server process [22136]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🌍 Web App запускается на http://0.0.0.0:8000
+2025-12-07 18:06:45,313 - aiogram.dispatcher - INFO - Run polling for bot @teremok_manager_bot id=8200223342 - 'Теремок Симулятор Менеджера'
+2025-12-07 18:07:02,163 - web.admin_routes - INFO - Admin dashboard accessed from 127.0.0.1
+INFO:     127.0.0.1:57956 - "GET /app/admin/dashboard HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 147, in admin_dashboard
+    stats = await user_service.get_statistics()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/services/user_service.py", line 46, in get_statistics
+    return await self.user_repo.get_statistics(days)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/repositories/user_repository.py", line 126, in get_statistics
+    date_7d = (datetime.now() - timedelta(days=7)).isoformat()
+                                ^^^^^^^^^
+NameError: name 'timedelta' is not defined
+INFO:     127.0.0.1:57979 - "HEAD /app/admin/dashboard HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:58032 - "GET /app/admin/dashboard HTTP/1.1" 303 See Other
+2025-12-07 18:15:54,501 - aiogram.event - INFO - Update id=655974747 is handled. Duration 594 ms by bot id=8200223342
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/cases HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/self_test HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/questions HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/check-subscription?user_id=7230904491 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/routes.py", line 88, in check_subscription
+    bot_instance = notification_service.get_bot_instance()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NotificationService' object has no attribute 'get_bot_instance'
+INFO:     37.120.138.11:0 - "GET /api/teremok/types HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/self_test HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/questions HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/check-subscription?user_id=7230904491 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/routes.py", line 88, in check_subscription
+    bot_instance = notification_service.get_bot_instance()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NotificationService' object has no attribute 'get_bot_instance'
+INFO:     37.120.138.11:0 - "GET /api/teremok/types HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/hub HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/formula/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/formula/self_test HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/formula/rsp/questions HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/check-subscription?user_id=7230904491 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/routes.py", line 88, in check_subscription
+    bot_instance = notification_service.get_bot_instance()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NotificationService' object has no attribute 'get_bot_instance'
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/main.py", line 6, in <module>
+    from bot.handlers import common, materials, diagnostics, lead_form, admin
+  File "/Library/teremok_game_bot/bot/handlers/admin.py", line 20, in <module>
+    from core.dependencies import user_service
+  File "/Library/teremok_game_bot/core/dependencies.py", line 1, in <module>
+    from repositories.user_repository import UserRepository
+  File "/Library/teremok_game_bot/repositories/user_repository.py", line 1
+    ```python
+    ^
+SyntaxError: invalid syntax
+🤖 Бот запускается...
+2025-12-07 18:18:20,706 - aiogram.dispatcher - INFO - Start polling
+INFO:     Started server process [23066]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🌍 Web App запускается на http://0.0.0.0:8000
+2025-12-07 18:18:21,569 - aiogram.dispatcher - INFO - Run polling for bot @teremok_manager_bot id=8200223342 - 'Теремок Симулятор Менеджера'
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/self_test HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/questions HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/types HTTP/1.1" 200 OK
+2025-12-07 18:18:58,167 - core.telegram_checks - INFO - Проверка подписки для user_id=7230904491: status=creator, subscribed=True
+INFO:     37.120.138.11:0 - "GET /api/check-subscription?user_id=7230904491 HTTP/1.1" 200 OK
+2025-12-07 18:19:11,187 - web.routes - INFO - Test result saved for user 7230904491: hamster (ID: 13)
+2025-12-07 18:19:11,207 - web.routes - ERROR - Failed to export test to sheets: 'UserContact' object has no attribute 'get'
+INFO:     37.120.138.11:0 - "POST /api/test/submit HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/result/13 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/hub HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/self_test HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/questions HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/types HTTP/1.1" 200 OK
+2025-12-07 18:26:39,520 - core.telegram_checks - INFO - Проверка подписки для user_id=7230904491: status=creator, subscribed=True
+INFO:     37.120.138.11:0 - "GET /api/check-subscription?user_id=7230904491 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/formula/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/hub HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/types_overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /api/teremok/types HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/hub HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/teremok/cases HTTP/1.1" 200 OK
+2025-12-07 18:34:38,846 - web.admin_routes - INFO - Admin dashboard accessed from 37.120.138.11
+INFO:     37.120.138.11:0 - "GET /app/admin?key=teremok_admin_2024 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /static/css/admin_theme.css HTTP/1.1" 304 Not Modified
+2025-12-07 18:34:51,008 - web.admin_routes - INFO - Admin leads accessed, status=all, search=
+INFO:     37.120.138.11:0 - "GET /app/admin/leads?key=teremok_admin_2024 HTTP/1.1" 200 OK
+2025-12-07 18:34:56,043 - web.admin_routes - INFO - Admin leads accessed, status=new, search=
+INFO:     37.120.138.11:0 - "GET /app/admin/leads?key=teremok_admin_2024&sort_by=created_at&sort_order=desc&status=new&days=&search= HTTP/1.1" 200 OK
+2025-12-07 18:34:59,144 - web.admin_routes - INFO - Admin leads accessed, status=in_progress, search=
+INFO:     37.120.138.11:0 - "GET /app/admin/leads?key=teremok_admin_2024&sort_by=created_at&sort_order=desc&status=in_progress&days=&search= HTTP/1.1" 200 OK
+2025-12-07 18:35:04,874 - web.admin_routes - INFO - Admin leads accessed, status=all, search=
+INFO:     37.120.138.11:0 - "GET /app/admin/leads?key=teremok_admin_2024&sort_by=created_at&sort_order=desc&status=all&days=&search= HTTP/1.1" 200 OK
+2025-12-07 18:35:06,542 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     37.120.138.11:0 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 240, in admin_tests
+    type_info = TYPES_DATA.get(test.get('result_type'))
+                               ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+INFO:     37.120.138.11:0 - "GET /app/admin/settings?key=teremok_admin_2024 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     37.120.138.11:0 - "GET /app/hub HTTP/1.1" 200 OK
+2025-12-07 18:35:23,327 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     37.120.138.11:0 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 240, in admin_tests
+    type_info = TYPES_DATA.get(test.get('result_type'))
+                               ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+2025-12-07 18:42:52,473 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     37.120.138.11:0 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 240, in admin_tests
+    type_info = TYPES_DATA.get(test.get('result_type'))
+                               ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+2025-12-07 18:42:55,427 - web.admin_routes - INFO - Admin leads accessed, status=all, search=
+INFO:     37.120.138.11:0 - "GET /app/admin/leads?key=teremok_admin_2024 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /static/css/admin_theme.css HTTP/1.1" 304 Not Modified
+2025-12-07 18:42:57,967 - web.admin_routes - INFO - Admin dashboard accessed from 37.120.138.11
+INFO:     37.120.138.11:0 - "GET /app/admin/dashboard?key=teremok_admin_2024 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /app/admin/settings?key=teremok_admin_2024 HTTP/1.1" 200 OK
+2025-12-07 18:43:56,396 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     37.120.138.11:0 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 240, in admin_tests
+    type_info = TYPES_DATA.get(test.get('result_type'))
+                               ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+2025-12-07 18:45:41,353 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     37.120.138.11:0 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1139, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/venv/lib/python3.12/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/teremok_game_bot/web/admin_routes.py", line 240, in admin_tests
+    type_info = TYPES_DATA.get(test.get('result_type'))
+                               ^^^^^^^^
+AttributeError: 'sqlite3.Row' object has no attribute 'get'
+INFO:     127.0.0.1:58961 - "GET /app/admin/tests HTTP/1.1" 403 Forbidden
+🤖 Бот запускается...
+2025-12-07 18:49:12,975 - aiogram.dispatcher - INFO - Start polling
+INFO:     Started server process [24648]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🌍 Web App запускается на http://0.0.0.0:8000
+2025-12-07 18:49:13,667 - aiogram.dispatcher - INFO - Run polling for bot @teremok_manager_bot id=8200223342 - 'Теремок Симулятор Менеджера'
+2025-12-07 18:49:34,908 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     127.0.0.1:59043 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 200 OK
+2025-12-07 18:49:52,781 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     37.120.138.11:0 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 200 OK
+2025-12-07 18:50:05,134 - web.admin_routes - INFO - Admin leads accessed, status=all, search=
+INFO:     37.120.138.11:0 - "GET /app/admin/leads?key=teremok_admin_2024 HTTP/1.1" 200 OK
+INFO:     37.120.138.11:0 - "GET /static/css/admin_theme.css HTTP/1.1" 304 Not Modified
+2025-12-07 18:50:06,413 - web.admin_routes - INFO - Admin tests accessed, product=all, result_type=all
+INFO:     127.0.0.1:59068 - "GET /app/admin/tests?key=teremok_admin_2024 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /static/css/admin_theme.css HTTP/1.1" 304 Not Modified
+2025-12-07 19:13:07,973 - aiogram.event - INFO - Update id=655974748 is handled. Duration 615 ms by bot id=8200223342
+INFO:     46.216.188.157:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+INFO:     46.216.188.157:0 - "GET /app/teremok/self_test HTTP/1.1" 200 OK
+INFO:     46.216.188.157:0 - "GET /api/teremok/questions HTTP/1.1" 200 OK
+2025-12-07 19:13:31,051 - core.telegram_checks - INFO - Проверка подписки для user_id=446020851: status=left, subscribed=False
+INFO:     46.216.188.157:0 - "GET /api/check-subscription?user_id=446020851 HTTP/1.1" 200 OK
+INFO:     46.216.188.157:0 - "GET /api/teremok/types HTTP/1.1" 200 OK
+INFO:     46.216.29.31:0 - "GET /app/teremok/overview HTTP/1.1" 200 OK
+2025-12-07 21:06:18,838 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-12-07 21:06:18,840 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8200223342)
+2025-12-07 21:07:01,656 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 8200223342)
+2025-12-07 21:08:25,810 - aiogram.event - INFO - Update id=655974749 is handled. Duration 643 ms by bot id=8200223342

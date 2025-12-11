@@ -1,0 +1,172 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="mb-8">
+    <h1>📊 Дашборд</h1>
+    <p style="color: var(--text-secondary);">Обзор активности за сегодня</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="grid-cols-4 mb-8">
+    <div class="glass-panel stat-card">
+        <div class="stat-label">Всего лидов</div>
+        <div class="stat-value">{{ stats.total_leads }}</div>
+        <div class="badge badge-new">+{{ stats.leads_today }} сегодня</div>
+    </div>
+    <div class="glass-panel stat-card">
+        <div class="stat-label">Всего тестов</div>
+        <div class="stat-value">{{ stats.total_tests }}</div>
+        <div class="badge badge-active">+{{ stats.tests_today }} сегодня</div>
+    </div>
+    <div class="glass-panel stat-card">
+        <div class="stat-label">Лиды (7 дней)</div>
+        <div class="stat-value">{{ stats.leads_7d }}</div>
+    </div>
+    <div class="glass-panel stat-card">
+        <div class="stat-label">Тесты (7 дней)</div>
+        <div class="stat-value">{{ stats.tests_7d }}</div>
+    </div>
+</div>
+
+<!-- Activity Chart -->
+<div class="glass-panel" style="padding: 24px; margin-bottom: 32px;">
+    <h2>📈 Динамика активности</h2>
+    <div style="height: 300px; width: 100%;">
+        <canvas id="activityChart"></canvas>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('activityChart').getContext('2d');
+
+        // Data from backend
+        const labels = {{ chart_labels | tojson
+    }};
+    const leadsData = {{ chart_leads | tojson }};
+    const testsData = {{ chart_tests | tojson }};
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Лиды',
+                data: leadsData,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.4,
+                fill: true,
+                borderWidth: 2
+            }, {
+                label: 'Тесты',
+                data: testsData,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                fill: true,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: '#e2e8f0', font: { family: "'Inter', sans-serif" } }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8', precision: 0 }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+    });
+</script>
+
+<div class="layout-container" style="gap: 24px; display: grid; grid-template-columns: 1fr 1fr;">
+    <!-- Recent Leads -->
+    <div class="glass-panel" style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>👥 Последние лиды</h2>
+            <a href="/app/admin/leads" class="btn btn-primary" style="font-size: 0.75rem;">Все лиды</a>
+        </div>
+
+        {% if recent_leads %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Телефон</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in recent_leads %}
+                <tr>
+                    <td>
+                        <div style="font-weight: 500;">{{ lead.name }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ lead.created_at[:10] }}</div>
+                    </td>
+                    <td>{{ lead.phone }}</td>
+                    <td><span class="badge badge-{{ lead.status or 'new' }}">{{ lead.status or 'new' }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">Лидов пока нет</div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Tests -->
+    <div class="glass-panel" style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>🧩 Последние тесты</h2>
+            <a href="/app/admin/tests" class="btn btn-primary" style="font-size: 0.75rem;">Все тесты</a>
+        </div>
+
+        {% if recent_tests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Результат</th>
+                    <th>Продукт</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in recent_tests %}
+                <tr>
+                    <td>
+                        <div style="font-weight: 500;">{{ test.name or 'Аноним' }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ test.created_at[:10] }}</div>
+                    </td>
+                    <td>
+                        <span style="font-size: 1.25rem;">{{ test.type_emoji }}</span>
+                        {{ test.type_name or test.result_type }}
+                    </td>
+                    <td><span class="badge" style="background: rgba(255,255,255,0.1);">{{ test.product }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">Тестов пока нет</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

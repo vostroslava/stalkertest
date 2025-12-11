@@ -1,0 +1,57 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="mb-8">
+    <h1>⚙️ Настройки</h1>
+    <p style="color: var(--text-secondary);">Конфигурация системы (Read-only)</p>
+</div>
+
+<div class="glass-panel" style="padding: 24px;">
+    <div style="display: grid; gap: 24px;">
+        <div class="section-group">
+            <h3 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Telegram
+                Bot</h3>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; align-items: center;">
+                <div style="color: var(--text-secondary);">Обязательный канал:</div>
+                <div><code
+                        style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">{{ config.REQUIRED_CHANNEL_USERNAME }}</code>
+                </div>
+
+                <div style="color: var(--text-secondary);">Чат менеджера:</div>
+                <div><code
+                        style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">{{ config.MANAGER_CHAT_ID }}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-group">
+            <h3 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                Интеграции</h3>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; align-items: center;">
+                <div style="color: var(--text-secondary);">Google Sheets:</div>
+                <div>
+                    {% if config.GOOGLE_SHEETS_ENABLED %}
+                    <span class="badge badge-active">Включено</span>
+                    {% else %}
+                    <span class="badge badge-spam">Отключено</span>
+                    {% endif %}
+                </div>
+
+                <div style="color: var(--text-secondary);">Webhook URL:</div>
+                <div style="font-family: monospace; font-size: 0.8rem; color: var(--text-active);">{{
+                    config.GOOGLE_SHEETS_WEBHOOK_URL }}</div>
+            </div>
+        </div>
+
+        <div class="section-group">
+            <h3 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Web App
+            </h3>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; align-items: center;">
+                <div style="color: var(--text-secondary);">Базовый URL:</div>
+                <div><a href="{{ config.WEB_APP_URL }}" target="_blank" style="color: var(--primary);">{{
+                        config.WEB_APP_URL }}</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

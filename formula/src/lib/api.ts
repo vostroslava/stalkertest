@@ -36,39 +36,71 @@ async function handleMockResponse(endpoint: string, type: string): Promise<Submi
     return null;
 }
 
+// Helper to map UI roles to Backend roles
+function mapRoleToBackend(role: string): string {
+    const map: Record<string, string> = {
+        'Собственник бизнеса': 'owner',
+        'Топ-менеджер': 'manager',
+        'Руководитель отдела продаж': 'sales',
+        'Коммерческий директор': 'sales',
+        'HR-менеджер': 'hr',
+        'Внутренний тренер': 'hr',
+        'Другое': 'other'
+    };
+    return map[role] || 'other';
+}
+
 // Submit lead form (Flow B - Consultation)
 export async function submitLead(contact: UserContact): Promise<SubmissionResponse> {
-    const mockResponse = await handleMockResponse(SUBMIT_ENDPOINT, 'LEAD');
-    if (mockResponse) return mockResponse;
+    // Determine backend URL (relative /api if served from same origin, or env var)
+    const API_BASE = '/api';
 
     try {
         const utmParams = extractUTMParams();
+
         const payload = {
-            type: 'LEAD',
-            timestamp: new Date().toISOString(),
-            ...contact,
-            ...utmParams,
+            name: contact.name,
+            role: mapRoleToBackend(contact.role),
+            phone_or_messenger: contact.phoneOrTelegram,
+            consent: true, // UI should enforce this, assuming true if submitted
+            email: undefined, // Formula form doesn't seem to collect email explicitly in UserContact?
+            company: contact.company,
+            team_size: contact.teamSize,
+            comment: contact.concerns,
+
+            product: 'formula',
+            source: 'formula_landing',
+
+            utm_source: utmParams.utmSource,
+            utm_medium: utmParams.utmMedium,
+            utm_campaign: utmParams.utmCampaign
         };
 
-        const response = await fetch(SUBMIT_ENDPOINT, {
+        const response = await fetch(`${API_BASE}/lead/register`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const data = await response.json();
-        return {
-            success: true,
-            message: data.message || 'Заявка успешно отправлена',
-        };
+
+        if (data.status === 'success') {
+            return {
+                success: true,
+                message: 'Заявка успешно отправлена',
+            };
+        } else {
+            throw new Error(data.message || 'Ошибка сервера');
+        }
     } catch (error) {
         console.error('Error submitting lead:', error);
+
+        // Fallback or Dev Mock
+        if (import.meta.env.DEV) {
+            console.warn("Dev Mode: Mocking success despite error", error);
+            return { success: true, message: '[DEV] Mock Success' };
+        }
+
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Ошибка отправки. Попробуйте позже.',

@@ -4,3 +4,6 @@ bot-tg/venv/
 **/.DS_Store
 *.pyc
 __pycache__/
+
+*.log
+.env

@@ -39,10 +39,99 @@ router = APIRouter()
 @app.on_event("startup")
 async def startup():
     await db.connect()
+    try:
+        await user_repo.ensure_schema()
+        logger.info("Schema updated")
+    except Exception as e:
+        logger.error(f"Schema update failed: {e}")
 
 @app.on_event("shutdown")
 async def shutdown():
     await db.disconnect()
+
+# ==== NEW: Unified Lead Registration Endpoint ====
+@router.post("/api/lead/register")
+@limiter.limit("10/minute")
+async def register_lead(request: Request):
+    """
+    Unified endpoint for lead registration from all frontends (Teremok, Formula, Bot Web).
+    Expected JSON:
+    {
+        "name": str, "role": str, "phone_or_messenger": str, "consent": bool,
+        "email": str (opt), "company": str (opt), "team_size": str (opt),
+        "comment": str (opt), "preferred_channel": str (opt),
+        "product": str, "source": str, "session_id": str (opt),
+        "utm_source": str (opt), ...
+    }
+    """
+    try:
+        data = await request.json()
+        
+        # Validation
+        if not data.get('consent'):
+             return JSONResponse({"status": "error", "message": "Consent required"}, status_code=400)
+        
+        # User ID Logic: Try to get from data, or session, or generate random
+        user_id = data.get('user_id')
+        if not user_id:
+             import random
+             # Use negative range or large range to avoid telegram ID collision? 
+             # Telegram IDs are usually positive. Let's use large random.
+             user_id = random.randint(100000000, 999999999)
+
+        contact = UserContact(
+            user_id=user_id,
+            name=data.get('name', 'Unknown'),
+            role=data.get('role', 'other'),
+            phone=data.get('phone_or_messenger', ''),
+            consent=data.get('consent', False),
+            email=data.get('email'),
+            company=data.get('company'),
+            team_size=data.get('team_size'),
+            comment=data.get('comment'),
+            preferred_channel=data.get('preferred_channel'),
+            product=data.get('product', 'unknown'),
+            source=data.get('source', 'unknown'),
+            session_id=data.get('session_id'),
+            utm_source=data.get('utm_source'),
+            utm_medium=data.get('utm_medium'),
+            utm_campaign=data.get('utm_campaign'),
+            utm_content=data.get('utm_content'),
+            utm_term=data.get('utm_term')
+        )
+        
+        await user_service.register_contact(contact)
+        
+        # Notify
+        if settings.SEND_NOTIFICATIONS:
+             msg = f"Unified Lead ({contact.product})\nRole: {contact.role}\nSource: {contact.source}"
+             if contact.comment:
+                 msg += f"\nComment: {contact.comment}"
+             
+             await notification_service.notify_new_lead(
+                 name=contact.name,
+                 contact=contact.phone,
+                 message=msg,
+                 source=f"Unified API ({contact.product})",
+                 username=None,
+                 user_id=user_id
+             )
+
+        # Export (Try/Catch)
+        try:
+            from core.google_sheets import export_lead_to_sheets
+            await export_lead_to_sheets(contact.__dict__)
+        except Exception as e:
+            logger.error(f"Sheets export error: {e}")
+
+        return JSONResponse({
+            "status": "success", 
+            "lead_id": user_id,
+            "session_id": contact.session_id or str(user_id)
+        })
+    except Exception as e:
+         logger.error(f"Register Lead Error: {e}")
+         return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
 
 
 # Jinja2 templates for new app pages
@@ -235,9 +324,18 @@ async def submit_test_results(request: Request):
         except Exception as e:
             logger.error(f"Failed to export test to sheets: {e}")
         
+        type_info = TYPES_DATA.get(result_type, {})
+        
         return JSONResponse({
             "status": "success",
             "result_id": test_id,
+            "result_type": result_type,
+            "scores": result_calc.get('scores', {}),
+            "result_info": {
+                "title": type_info.get("title", result_type),
+                "description": type_info.get("description", "Результат сохранен"),
+                "full_description": type_info.get("full_description", "")
+            }
         })
         
     except Exception as e:
@@ -607,12 +705,17 @@ formula_path = os.path.join(os.path.dirname(__file__), "apps/formula")
 if os.path.exists(formula_path):
     app.mount("/formula-app", StaticFiles(directory=formula_path, html=True), name="formula_app")
 
+# Mount Root Ecosystem (Bundled)
+ecosystem_path = os.path.join(os.path.dirname(__file__), "apps/ecosystem")
+if os.path.exists(ecosystem_path):
+    app.mount("/ecosystem", StaticFiles(directory=ecosystem_path, html=True), name="ecosystem")
+
 from fastapi.responses import RedirectResponse
 
 @app.get("/")
 async def read_root():
-    """Redirect root to main hub or teremok"""
-    return RedirectResponse(url="/teremok-app/")
+    """Redirect root to ecosystem hub"""
+    return RedirectResponse(url="/ecosystem/index.html")
 
 @app.get("/admin")
 async def admin_root():

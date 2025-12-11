@@ -710,6 +710,7 @@
         <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <button class="modal-close" type="button" onclick="closeLeadModal()">×</button>
 
+            <!-- Banner if accessed from test button -->
             <div id="testAccessBanner" class="test-access-banner" style="display:none;">
                 ТЕСТ ДОСТУПЕН ТОЛЬКО ПОСЛЕ РЕГИСТРАЦИИ
             </div>
@@ -732,10 +733,9 @@
                     <select class="select" id="role" name="role" required>
                         <option value="" disabled selected>Выберите вариант</option>
                         <option value="owner">Собственник / генеральный директор</option>
-                        <option value="head">Руководитель отдела / филиала</option>
+                        <option value="manager">Руководитель отдела / филиала</option>
                         <option value="hr">HR / рекрутер</option>
-                        <option value="sales">Руководитель отдела продаж</option>
-                        <option value="other">Другое</option>
+                        <option value="other">Другая роль</option>
                     </select>
                 </div>
 
@@ -746,8 +746,13 @@
 
                 <div class="field-group">
                     <label for="team_size">Размер команды</label>
-                    <input class="input" type="text" id="team_size" name="team_size"
-                        placeholder="Например: 25 человек, отдел продаж 8 человек">
+                    <select class="select" id="team_size" name="team_size">
+                        <option value="" disabled selected>Выберите вариант</option>
+                        <option value="1-10">1–10 человек</option>
+                        <option value="11-50">11–50 человек</option>
+                        <option value="51-200">51–200 человек</option>
+                        <option value="200+">200+ человек</option>
+                    </select>
                 </div>
 
                 <div class="field-group">
@@ -759,35 +764,36 @@
                 </div>
 
                 <div class="field-group">
-                    <label for="messenger">Удобный мессенджер</label>
+                    <label for="messenger">Удобный канал связи</label>
                     <select class="select" id="messenger" name="messenger">
                         <option value="" disabled selected>Выберите вариант</option>
                         <option value="telegram">Telegram</option>
                         <option value="whatsapp">WhatsApp</option>
-                        <option value="viber">Viber</option>
-                        <option value="other">Другое</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Звонок</option>
                     </select>
                 </div>
 
                 <div class="field-group">
                     <label for="email">E-mail</label>
                     <input class="input" type="email" id="email" name="email"
-                        placeholder="при необходимости отправки деталей по участию">
+                        placeholder="Если удобно получить детали участия на почту">
                 </div>
 
                 <div class="field-group">
                     <label for="request">Ваш запрос (кратко)</label>
                     <textarea id="request" name="request"
-                        placeholder="С чем хотите поработать на «Теремке» — команда, вовлечённость, подбор, управленческие решения и т.п."></textarea>
+                        placeholder="С чем хотите поработать на «Теремке»: текучка, вовлечённость, подбор, управленческие решения..."></textarea>
                 </div>
 
                 <div class="field-group">
                     <label class="consent-label">
-                        <input type="checkbox" id="privacyConsent" required>
+                        <input type="checkbox" id="privacyConsent" name="privacyConsent" required>
                         <span>
                             Я ознакомлен(а) и согласен(на) с
-                            <button type="button" class="link-button" onclick="openPrivacyModal()">Политикой
-                                конфиденциальности</button>.
+                            <button type="button" class="link-button" onclick="openPrivacyModal()">
+                                Политикой конфиденциальности
+                            </button>.
                         </span>
                     </label>
                 </div>
@@ -823,12 +829,12 @@
                     <div class="test-progress-bar" id="testProgressBar"></div>
                 </div>
                 <div id="testQuestionCard" class="test-question-card">
-                    <!-- Dynamic Question Content will be injected here -->
+                    <div class="loading">Загрузка вопросов...</div>
                 </div>
             </div>
 
             <div id="testResultContainer" style="display: none;">
-                <!-- Dynamic Result Content will be injected here -->
+                <!-- Result content -->
             </div>
 
             <div id="testTelegramBlock" class="telegram-card" style="display:none; margin-top: 20px;">

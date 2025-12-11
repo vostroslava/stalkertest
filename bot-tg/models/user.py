@@ -9,16 +9,33 @@ class User(BaseModel):
     joined_at: Optional[datetime] = None
 
 class UserContact(BaseModel):
-    user_id: int
-    name: str
-    role: str
+    user_id: Optional[int] = None # Optional for web leads
+    session_id: Optional[str] = None
+    name: str # Required
+    role: str # Required
+    phone: str # Required (phone_or_messenger map to this)
+    consent: bool = False # Required
+    
+    # Optional fields
+    email: Optional[str] = None
     company: Optional[str] = None
-    team_size: str
-    phone: str
-    telegram_username: Optional[str] = None
+    team_size: Optional[str] = None
+    comment: Optional[str] = None # Was notes
+    preferred_channel: Optional[str] = None
+    
+    # System fields
     product: str = "teremok"
+    source: str = "landing"
+    telegram_username: Optional[str] = None
     status: str = "new"
-    notes: Optional[str] = None
+    
+    # UTM
+    utm_source: Optional[str] = None
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
+    utm_content: Optional[str] = None
+    utm_term: Optional[str] = None
+
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

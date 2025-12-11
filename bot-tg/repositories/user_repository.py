@@ -23,11 +23,37 @@ class UserRepository(BaseRepository):
             user_id, contact_info, message
         )
 
+    async def ensure_schema(self) -> None:
+        """Ensure database schema has all required columns for unified Lead"""
+        queries = [
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS email TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS consent BOOLEAN DEFAULT FALSE",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS preferred_channel TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS source TEXT DEFAULT 'landing'",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS session_id TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS utm_source TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS utm_medium TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS utm_campaign TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS utm_content TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS utm_term TEXT",
+            "ALTER TABLE user_contacts ADD COLUMN IF NOT EXISTS comment TEXT"  # If separate from notes
+        ]
+        for q in queries:
+            try:
+                await self.execute(q)
+            except Exception as e:
+                logger.warning(f"Schema update warning: {e}")
+
     async def save_contact(self, contact: UserContact) -> None:
+        # Map comment to notes if needed, or save both
+        notes_val = contact.comment or contact.notes if hasattr(contact, 'notes') else contact.comment
+        
         await self.execute("""
             INSERT INTO user_contacts 
-            (user_id, name, role, company, team_size, phone, telegram_username, product, updated_at, status, notes)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP, $9, $10)
+            (user_id, name, role, company, team_size, phone, telegram_username, product, updated_at, status, 
+             notes, email, consent, preferred_channel, source, session_id,
+             utm_source, utm_medium, utm_campaign, utm_content, utm_term)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
             ON CONFLICT(user_id) DO UPDATE SET
                 name = excluded.name,
                 role = excluded.role,
@@ -36,11 +62,24 @@ class UserRepository(BaseRepository):
                 phone = excluded.phone,
                 telegram_username = excluded.telegram_username,
                 product = excluded.product,
-                updated_at = CURRENT_TIMESTAMP
+                updated_at = CURRENT_TIMESTAMP,
+                notes = excluded.notes,
+                email = excluded.email,
+                consent = excluded.consent,
+                preferred_channel = excluded.preferred_channel,
+                source = excluded.source,
+                session_id = excluded.session_id,
+                utm_source = excluded.utm_source,
+                utm_medium = excluded.utm_medium,
+                utm_campaign = excluded.utm_campaign,
+                utm_content = excluded.utm_content,
+                utm_term = excluded.utm_term
         """, 
             contact.user_id, contact.name, contact.role, contact.company, 
             contact.team_size, contact.phone, contact.telegram_username, 
-            contact.product, contact.status, contact.notes
+            contact.product, contact.status, notes_val,
+            contact.email, contact.consent, contact.preferred_channel, contact.source, contact.session_id,
+            contact.utm_source, contact.utm_medium, contact.utm_campaign, contact.utm_content, contact.utm_term
         )
 
     async def get_contact(self, user_id: int) -> Optional[UserContact]:

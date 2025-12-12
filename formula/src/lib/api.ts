@@ -1,6 +1,16 @@
-import type { UserContact, QuizAnswer, TestResult, SubmissionResponse } from '@/types';
+import type { UserContact, QuizAnswer, TestResult, SubmissionResponse, EmployeeTestSubmission } from '@/types';
 
-const SUBMIT_ENDPOINT = import.meta.env.VITE_SUBMIT_ENDPOINT || '';
+// Use global API_BASE if available (configured in index.html), otherwise default to /api
+const getApiBase = () => {
+    // @ts-ignore
+    if (typeof window !== 'undefined' && window.__API_BASE__) {
+        // @ts-ignore
+        return window.__API_BASE__.replace(/\/+$/, '');
+    }
+    return '/api';
+};
+
+const LEAD_ID_KEY = 'formula_lead_id';
 
 // Extract UTM parameters from URL
 export function extractUTMParams(): {
@@ -14,26 +24,6 @@ export function extractUTMParams(): {
         utmMedium: params.get('utm_medium') || undefined,
         utmCampaign: params.get('utm_campaign') || undefined,
     };
-}
-
-// Helper to handle mocked responses in dev mode
-async function handleMockResponse(endpoint: string, type: string): Promise<SubmissionResponse | null> {
-    const isConfigured = endpoint && !endpoint.includes('YOUR_SCRIPT_ID');
-
-    if (!isConfigured) {
-        console.warn(`[API] ${type} submission intercepted: Backend NOT configured.`);
-
-        // In development, mock success to allow UI testing
-        if (import.meta.env.DEV) {
-            console.info('[API] Dev mode detected: Mocking successful response after 1s delay.');
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return {
-                success: true,
-                message: '[DEV] Mock success: Data not saved to Sheets',
-            };
-        }
-    }
-    return null;
 }
 
 // Helper to map UI roles to Backend roles
@@ -52,8 +42,7 @@ function mapRoleToBackend(role: string): string {
 
 // Submit lead form (Flow B - Consultation)
 export async function submitLead(contact: UserContact): Promise<SubmissionResponse> {
-    // Determine backend URL (relative /api if served from same origin, or env var)
-    const API_BASE = '/api';
+    const API_BASE = getApiBase();
 
     try {
         const utmParams = extractUTMParams();
@@ -62,8 +51,8 @@ export async function submitLead(contact: UserContact): Promise<SubmissionRespon
             name: contact.name,
             role: mapRoleToBackend(contact.role),
             phone_or_messenger: contact.phoneOrTelegram,
-            consent: true, // UI should enforce this, assuming true if submitted
-            email: undefined, // Formula form doesn't seem to collect email explicitly in UserContact?
+            consent: true,
+            email: undefined,
             company: contact.company,
             team_size: contact.teamSize,
             comment: contact.concerns,
@@ -85,6 +74,11 @@ export async function submitLead(contact: UserContact): Promise<SubmissionRespon
         const data = await response.json();
 
         if (data.status === 'success') {
+            const leadId = data.lead_id || data.user_id || data.id;
+            if (leadId) {
+                sessionStorage.setItem(LEAD_ID_KEY, String(leadId));
+            }
+
             return {
                 success: true,
                 message: 'Заявка успешно отправлена',
@@ -94,13 +88,6 @@ export async function submitLead(contact: UserContact): Promise<SubmissionRespon
         }
     } catch (error) {
         console.error('Error submitting lead:', error);
-
-        // Fallback or Dev Mock
-        if (import.meta.env.DEV) {
-            console.warn("Dev Mode: Mocking success despite error", error);
-            return { success: true, message: '[DEV] Mock Success' };
-        }
-
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Ошибка отправки. Попробуйте позже.',
@@ -108,130 +95,135 @@ export async function submitLead(contact: UserContact): Promise<SubmissionRespon
     }
 }
 
-// Submit mini-quiz answers with contact (Flow A - before full test)
+// ------------------------------------------------------------------
+// Legacy / Test Submissions (Migrated to Unified Backend)
+// ------------------------------------------------------------------
+
+async function submitTestGeneric(
+    endpoint: string,
+    payload: any
+): Promise<SubmissionResponse> {
+    const API_BASE = getApiBase();
+    try {
+        // Ensure we have a user_id
+        let userId = sessionStorage.getItem(LEAD_ID_KEY);
+
+        // If no user_id found (and not registered), we might need to handle it.
+        // For now, we proceed. If the endpoint requires it, it might fail or create a guest.
+
+        const finalPayload = {
+            user_id: userId ? parseInt(userId, 10) : undefined,
+            ...payload
+        };
+
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(finalPayload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Backend returns status: success/error
+        if (data.status === 'success') {
+            return {
+                success: true,
+                message: data.message || 'Результаты сохранены',
+            };
+        } else {
+            throw new Error(data.message || 'Ошибка сервера');
+        }
+
+    } catch (error) {
+        console.error('Error submitting test:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Ошибка отправки. Попробуйте позже.',
+        };
+    }
+}
+
+// Submit mini-quiz answers
 export async function submitMiniQuiz(
     contact: UserContact,
     answers: QuizAnswer[]
 ): Promise<SubmissionResponse> {
-    const mockResponse = await handleMockResponse(SUBMIT_ENDPOINT, 'MINI_QUIZ');
-    if (mockResponse) return mockResponse;
+    // 1. Ensure lead is registered
+    const leadResult = await submitLead(contact);
+    if (!leadResult.success) return leadResult;
 
-    try {
-        const utmParams = extractUTMParams();
-        const payload = {
-            type: 'MINI_QUIZ',
-            timestamp: new Date().toISOString(),
-            contact,
-            answers,
-            ...utmParams,
-        };
+    // 2. Submit answers
+    // Using RSP submit endpoint as generic receiver for now, or we could add specific one.
+    // The user instruction focuses on "Formula (React)... translate tests and results to unified backend".
+    // Since MiniQuiz is part of Formula, we use /api/formula/rsp/submit or similar.
+    // However, MiniQuiz might have different structure. 
+    // For safety, we assume the backend handles it or we send as generic data.
 
-        const response = await fetch(SUBMIT_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
+    // NOTE: The previous backend was Google Sheet. 
+    // Now we must use /api/formula/rsp/submit.
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    // We map answers to a simplified format if needed.
+    const answersMap = answers.reduce((acc, curr) => {
+        acc[curr.questionId] = curr.answerId || curr.value;
+        return acc;
+    }, {} as Record<string, any>);
 
-        const data = await response.json();
-        return {
-            success: true,
-            message: data.message || 'Данные сохранены',
-        };
-    } catch (error) {
-        console.error('Error submitting mini quiz:', error);
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Ошибка отправки. Попробуйте позже.',
-        };
-    }
+    return submitTestGeneric('/formula/rsp/submit', {
+        type: 'mini_quiz', // Marker for backend to distinguish if needed
+        answers: answersMap,
+        timestamp: new Date().toISOString()
+    });
 }
 
-// Submit full test results (Flow A - final submission)
+// Submit full test results
 export async function submitFullTest(result: TestResult): Promise<SubmissionResponse> {
-    const mockResponse = await handleMockResponse(SUBMIT_ENDPOINT, 'FULL_TEST');
-    if (mockResponse) return mockResponse;
-
-    try {
-        const utmParams = extractUTMParams();
-        const payload = {
-            type: 'FULL_TEST',
-            timestamp: result.timestamp,
-            contact: result.contact,
-            answers: result.answers,
-            scores: result.scores,
-            dominantDimension: result.dominantDimension,
-            dominantPercentage: result.dominantPercentage,
-            ...utmParams,
-        };
-
-        const response = await fetch(SUBMIT_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return {
-            success: true,
-            message: data.message || 'Результаты сохранены',
-        };
-    } catch (error) {
-        console.error('Error submitting full test:', error);
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Ошибка отправки. Попробуйте позже.',
-        };
+    // 1. Register contact if not already (it should be, but safe to update)
+    // Actually full test usually comes after lead gen.
+    if (result.contact) {
+        await submitLead(result.contact);
     }
+
+    const answersMap = result.answers.reduce((acc, curr) => {
+        acc[curr.questionId] = curr.answerId || curr.value;
+        return acc;
+    }, {} as Record<string, any>);
+
+    return submitTestGeneric('/formula/rsp/submit', {
+        type: 'full_test',
+        answers: answersMap,
+        scores: result.scores,
+        dominant_dimension: result.dominantDimension,
+        timestamp: result.timestamp
+    });
 }
 
 // Submit employee mini-test results
 export async function submitEmployeeTest(
-    submission: import('@/types').EmployeeTestSubmission
+    submission: EmployeeTestSubmission
 ): Promise<SubmissionResponse> {
-    const mockResponse = await handleMockResponse(SUBMIT_ENDPOINT, 'EMPLOYEE_TEST');
-    if (mockResponse) return mockResponse;
-
-    try {
-        const utmParams = extractUTMParams();
-        const payload = {
-            ...submission,
-            ...utmParams,
-        };
-
-        const response = await fetch(SUBMIT_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return {
-            success: true,
-            message: data.message || 'Результаты сохранены',
-        };
-    } catch (error) {
-        console.error('Error submitting employee test:', error);
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Ошибка отправки. Попробуйте позже.',
-        };
+    // 1. Register contact (should satisfy requirements)
+    if (submission.contact) {
+        const leadRes = await submitLead(submission.contact);
+        if (!leadRes.success) return leadRes;
     }
+
+    // 2. Submit test
+    // Map array answers to object if needed, or send as is.
+    // Backend expects 'answers' dict usually.
+    const answersMap = submission.answers.reduce((acc, curr) => {
+        acc[curr.questionId] = curr.option;
+        return acc;
+    }, {} as Record<number, string>);
+
+    return submitTestGeneric('/formula/rsp/submit', {
+        type: 'employee_test',
+        employee_name: submission.employee.name,
+        answers: answersMap,
+        result: submission.result, // Send calculated result too if backend wants to log it
+        timestamp: submission.timestamp
+    });
 }

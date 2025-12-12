@@ -139,6 +139,28 @@ class UserRepository(BaseRepository):
     async def get_telegram_admin(self, user_id: int) -> Optional[dict]:
         row = await self.fetch_one("SELECT * FROM admins WHERE user_id = $1", user_id)
         return dict(row) if row else None
+        
+    async def find_duplicate_contact(self, product: str, phone: str, days: int = 30) -> Optional[UserContact]:
+        """Find recent contact with same product and phone"""
+        if not product or not phone:
+            return None
+            
+        date_limit = datetime.now() - timedelta(days=days)
+        
+        # Check by phone (or phone_or_messenger)
+        # Note: user_contacts stores phone in 'phone' column.
+        query = """
+            SELECT * FROM user_contacts 
+            WHERE product = $1 
+              AND phone = $2 
+              AND updated_at >= $3
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """
+        row = await self.fetch_one(query, product, phone, date_limit)
+        if row:
+             return UserContact(**dict(row))
+        return None
 
     async def get_all_telegram_admins(self) -> List[dict]:
         rows = await self.fetch_all("SELECT * FROM admins")

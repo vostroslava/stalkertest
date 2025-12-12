@@ -1,0 +1,188 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="mb-8" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1>🗂 Unified Tests</h1>
+        <p style="color: var(--text-secondary);">Единая таблица результатов (Teremok + Formula)</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="exportTests()">
+        <i data-feather="download"></i> Экспорт в Google Sheets (Unified)
+    </button>
+    <button class="btn btn-secondary" onclick="backfillTests()"
+        style="margin-left: 10px; background: rgba(255,255,255,0.1);">
+        <i data-feather="database"></i> Импорт истории
+    </button>
+</div>
+
+<!-- Filters -->
+<div class="glass-panel mb-8" style="padding: 24px;">
+    <form method="get" class="grid-cols-4" style="align-items: end; gap: 16px;">
+        <input type="hidden" name="key" value="{{ key or '' }}">
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Продукт</label>
+            <select name="product"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+                <option value="all" {% if current_product=='all' %}selected{% endif %}>Все продукты</option>
+                <option value="teremok" {% if current_product=='teremok' %}selected{% endif %}>Теремок</option>
+                <option value="formula" {% if current_product=='formula' %}selected{% endif %}>Формула</option>
+            </select>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.875rem; color: var(--text-secondary);">Период (дней)</label>
+            <input type="number" name="days" value="{{ current_days or '' }}" placeholder="Все время"
+                style="padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; border-radius: 8px;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="height: 42px;">Найти</button>
+    </form>
+</div>
+
+<!-- Tests Table -->
+<div class="glass-panel" style="padding: 0; overflow: hidden;">
+    {% if tests %}
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        Дата</th>
+                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        Lead</th>
+                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        Project / Source</th>
+                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        Результат</th>
+                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        Meta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 12px 16px; white-space: nowrap; color: var(--text-secondary);">
+                        {{ test.created_at[:16] }}
+                    </td>
+                    <td style="padding: 12px 16px;">
+                        <div style="font-weight: 500;">
+                            {% if test.lead_name %}{{ test.lead_name }}{% else %}<span style="opacity:0.5">Guest {{
+                                test.user_id }}</span>{% endif %}
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            {{ test.lead_role or '' }}
+                            {% if test.lead_company %} @ {{ test.lead_company }}{% endif %}
+                        </div>
+                        <div style="font-size: 0.75rem; opacity: 0.6; margin-top: 2px;">
+                            {{ test.lead_phone or '' }}
+                        </div>
+                    </td>
+                    <td style="padding: 12px 16px;">
+                        <span class="badge"
+                            style="background: rgba(255,255,255,0.1); margin-bottom: 4px; display: inline-block;">
+                            {{ test.product or 'unknown' }}
+                        </span>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                            {{ test.source or '-' }}
+                        </div>
+                        {% if test.utm_source %}
+                        <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">
+                            utm: {{ test.utm_source }}
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 12px 16px;">
+                        <b>{{ test.summary }}</b>
+                    </td>
+                    <td
+                        style="padding: 12px 16px; font-size: 0.8rem; color: var(--text-secondary); max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+                        Channel: {{ test.channel or '-' }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+        Нет записей в Unified Storage (новые тесты будут появляться здесь)
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function exportTests() {
+        const btn = document.querySelector('button[onclick="exportTests()"]');
+        btn.disabled = true;
+        btn.innerHTML = `<i data-feather="loader" class="spin"></i> Экспорт...`;
+        feather.replace();
+
+        try {
+            // Get key from hidden input
+            const key = document.querySelector('input[name="key"]').value;
+            const url = '/app/admin/api/export/tests/unified' + (key ? `?key=${key}` : '');
+
+            const response = await fetch(url, { method: 'POST' });
+            const data = await response.json();
+
+            if (data.status === 'ok') {
+                alert(`Экспорт успешно завершен! Обработано записей: ${data.count}`);
+            } else {
+                alert('Ошибка экспорта: ' + (data.error || 'Unknown error'));
+            }
+        } catch (e) {
+            alert('Ошибка соединения: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i data-feather="download"></i> Экспорт в Google Sheets (Unified)`;
+            feather.replace();
+        }
+    }
+
+    async function backfillTests() {
+        if (!confirm('Запустить импорт исторических данных? Это безопасно (дубликаты пропускаются).')) return;
+
+        const btn = document.querySelector('button[onclick="backfillTests()"]');
+        const origText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<i data-feather="loader" class="spin"></i> Импорт...`;
+        feather.replace();
+
+        try {
+            const key = document.querySelector('input[name="key"]').value;
+            const url = '/app/admin/api/admin/backfill/test_sessions' + (key ? `?key=${key}` : '');
+
+            const response = await fetch(url, { method: 'POST' });
+            const data = await response.json();
+
+            if (data.status === 'ok') {
+                alert(`Импорт завершен.\nTeremok: ${data.stats.teremok}\nFormula: ${data.stats.formula}`);
+                window.location.reload();
+            } else {
+                alert('Ошибка импорта: ' + (data.error || 'Unknown error'));
+            }
+        } catch (e) {
+            alert('Ошибка соединения: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = origText;
+            feather.replace();
+        }
+    }
+</script>
+<style>
+    .spin {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}

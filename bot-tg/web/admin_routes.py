@@ -290,6 +290,54 @@ async def admin_tests(request: Request,
         "current_sort_order": sort_order,
         "key": key or request.query_params.get("key") or request.cookies.get("admin_key")
     })
+
+@router.get("/tests/unified")
+async def admin_unified_tests(request: Request,
+                              product: str = "all",
+                              days: str = None,
+                              key: str = None):
+    """Unified Test Sessions Page"""
+    if not await verify_admin_auth(request):
+        return get_access_denied_response(request)
+    
+    # Safely parse days
+    days_val = int(days) if days and days.isdigit() else None
+
+    # Fetch Unified Sessions
+    sessions = await test_service.get_unified_tests(
+        limit=200, 
+        product=product if product != 'all' else None, 
+        days=days_val
+    )
+    
+    # Enrich
+    sessions_enriched = []
+    for s in sessions:
+        s_dict = serialize_record(s)
+        
+        # Parse result summary
+        try:
+             res_json = s_dict.get('result_json')
+             if res_json:
+                 import json
+                 res = json.loads(res_json)
+                 # Try to find type or score summary
+                 primary = res.get('type') or res.get('primary_name') or res.get('primary_type_name') or 'N/A'
+                 s_dict['summary'] = primary
+             else:
+                 s_dict['summary'] = '-'
+        except:
+             s_dict['summary'] = 'Error parsing result'
+             
+        sessions_enriched.append(s_dict)
+
+    return templates.TemplateResponse("admin/unified_tests.html", {
+        "request": request,
+        "tests": sessions_enriched,
+        "current_product": product,
+        "current_days": days,
+        "key": key or request.query_params.get("key") or request.cookies.get("admin_key")
+    })
 # ... REST OF FILE ...
 
 # ===== SETTINGS =====
@@ -433,4 +481,95 @@ async def export_tests_to_sheets(request: Request):
         return JSONResponse({"status": "ok", "count": sent_count})
     except Exception as e:
         logger.error(f"Export tests failed: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@router.post("/api/export/tests/unified")
+async def export_unified_tests_to_sheets(request: Request):
+    """Export UNIFIED tests to Google Sheets"""
+    if not await verify_admin_auth(request):
+        return JSONResponse({"error": "Unauthorized"}, status_code=403)
+    
+    if not settings.GOOGLE_SHEETS_ENABLED:
+        return JSONResponse({"error": "Google Sheets интеграция отключена"}, status_code=400)
+    
+    try:
+        from core.google_sheets import send_to_sheets
+        import json
+        
+        # Get all unified sessions
+        sessions = await test_service.get_unified_tests(limit=10000)
+        
+        all_data = []
+        for s in sessions:
+            # Ensure s is a dict (it returns dict from service already)
+            
+            # Helper to safely get lead props
+            lead_name = s.get('lead_name') or ''
+            lead_phone = s.get('lead_phone') or ''
+            lead_role = s.get('lead_role') or ''
+            lead_company = s.get('lead_company') or ''
+            lead_team_size = s.get('lead_team_size') or ''
+            lead_channel = s.get('lead_preferred_channel') or ''
+            
+            # Parse result for summary
+            summary = ""
+            res_json = s.get('result_json')
+            if res_json:
+                 try:
+                     res = json.loads(res_json)
+                     summary = res.get('type') or res.get('primary_name') or res.get('primary_type_name') or 'N/A'
+                 except:
+                     summary = "Parsing Error"
+            
+            all_data.append({
+                "type": "unified_test", # Marker for Google Script if it cares, or we can use "test" if compatible
+                # But requirement says "Unified list Tests", strict column order.
+                # Assuming GAS just dumps keys or we match keys.
+                # User said: "Колонки (строго в этом порядке): created_at, product, source ... result_json"
+                # I will map keys closely to that order.
+                
+                "created_at": str(s.get('created_at', '')),
+                "product": s.get('product', ''),
+                "source": s.get('source', ''),
+                "user_id": str(s.get('user_id', '')),
+                "lead_name": lead_name,
+                "lead_phone_or_messenger": lead_phone,
+                "lead_preferred_channel": lead_channel,
+                "company": lead_company,
+                "role": lead_role,
+                "team_size": lead_team_size,
+                "utm_source": s.get('utm_source', ''),
+                "utm_medium": s.get('utm_medium', ''),
+                "utm_campaign": s.get('utm_campaign', ''),
+                "test_summary": summary,
+                "result_json": res_json or ""
+            })
+            
+        # Send in batches
+        BATCH_SIZE = 50
+        sent_count = 0
+        
+        for i in range(0, len(all_data), BATCH_SIZE):
+            batch = all_data[i:i + BATCH_SIZE]
+            if await send_to_sheets(batch):
+                sent_count += len(batch)
+        
+        logger.info(f"Unified tests export completed: {sent_count}/{len(sessions)} tests")
+        return JSONResponse({"status": "ok", "count": sent_count})
+    except Exception as e:
+        logger.error(f"Export unified tests failed: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@router.post("/api/admin/backfill/test_sessions")
+async def backfill_test_sessions(request: Request):
+    """Manually trigger backfill of legacy test data"""
+    if not await verify_admin_auth(request):
+        return JSONResponse({"error": "Unauthorized"}, status_code=403)
+    
+    try:
+        stats = await test_repo.backfill_unified_sessions()
+        logger.info(f"Backfill completed: {stats}")
+        return JSONResponse({"status": "ok", "stats": stats})
+    except Exception as e:
+        logger.error(f"Backfill error: {e}")
         return JSONResponse({"error": str(e)}, status_code=500)

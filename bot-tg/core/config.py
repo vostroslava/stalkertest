@@ -32,6 +32,9 @@ class Settings:
 
     @property
     def DATABASE_URL(self) -> str:
+        url = os.getenv("DATABASE_URL")
+        if url:
+             return url
         return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
     
     # Channel subscription check

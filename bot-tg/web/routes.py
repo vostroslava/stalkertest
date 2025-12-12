@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from core.texts import TYPES_DATA, get_types_for_api
 from core.config import settings
 from core.telegram_checks import is_subscribed_to_required_channel
@@ -34,6 +35,16 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# Add CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 router = APIRouter()
 
 @app.on_event("startup")
@@ -41,9 +52,14 @@ async def startup():
     await db.connect()
     try:
         await user_repo.ensure_schema()
-        logger.info("Schema updated")
+        logger.info("User schema updated")
     except Exception as e:
-        logger.error(f"Schema update failed: {e}")
+        logger.error(f"User schema update failed: {e}")
+    try:
+        await test_repo.ensure_schema()
+        logger.info("Test schema updated")
+    except Exception as e:
+        logger.error(f"Test schema update failed: {e}")
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -71,27 +87,81 @@ async def register_lead(request: Request):
         if not data.get('consent'):
              return JSONResponse({"status": "error", "message": "Consent required"}, status_code=400)
         
-        # User ID Logic: Try to get from data, or session, or generate random
+        # Normalization (Fallback for legacy fields)
+        phone_or_messenger = data.get('phone_or_messenger') or data.get('phone') or ''
+        preferred_channel = data.get('preferred_channel') or data.get('messenger') or None
+        comment = data.get('comment') or data.get('request') or None
+        
+        product = data.get('product', 'unknown')
+        source = data.get('source', 'unknown')
+
+        # === DEDUPLICATION ===
+        deduped = False
         user_id = data.get('user_id')
+        
+        if not user_id and phone_or_messenger:
+            # Check for existing lead in last 30 days
+            duplicate = await user_repo.find_duplicate_contact(product, phone_or_messenger, days=30)
+            if duplicate:
+                user_id = duplicate.user_id
+                deduped = True
+                logger.info(f"Lead deduplicated: found existing {user_id} for {product}/{phone_or_messenger}")
+                
+                # Update existing fields if new ones provided (Merge logic)
+                # We use the new data if truthy, else keep old?
+                # Actually UserContact logic below overwrites. 
+                # To support "update only if nonempty", we strictly pick nonempty from data,
+                # otherwise fallback to duplicate's data for core fields.
+                # However, the constructor below takes arguments. We can just fill them smartly.
+                
+                # Pre-fill with duplicate data defaults
+                # But wait, we want to construct UserContact with merged data.
+                
+                # Let's map normalized "data" to new_vals
+                new_name = data.get('name')
+                new_role = data.get('role')
+                new_email = data.get('email')
+                new_company = data.get('company')
+                new_team = data.get('team_size')
+                new_comment = comment
+                new_channel = preferred_channel
+                new_source = source # Source usually updates to last touch
+                
+                # If new is provided, use it. Else use duplicate's if available?
+                # Requirement: "a) НЕ создавать новую запись b) обновить существующую запись полями, если в новом запросе они непустые"
+                # This implies: If request has name="New", update it. If request has name="", KEEP OLD?
+                # Yes.
+                
+                data['name'] = new_name or duplicate.name
+                data['role'] = new_role or duplicate.role
+                data['email'] = new_email or duplicate.email
+                data['company'] = new_company or duplicate.company
+                data['team_size'] = new_team or duplicate.team_size
+                comment = new_comment or duplicate.comment # Merge comment? Or overwrite? "Update if nonempty" implies overwrite.
+                preferred_channel = new_channel or duplicate.preferred_channel
+                
+                # utms usually overwrite on new touch
+                
+        # =====================
+
+        # User ID Logic: If still None, generate
         if not user_id:
              import random
-             # Use negative range or large range to avoid telegram ID collision? 
-             # Telegram IDs are usually positive. Let's use large random.
              user_id = random.randint(100000000, 999999999)
 
         contact = UserContact(
             user_id=user_id,
             name=data.get('name', 'Unknown'),
             role=data.get('role', 'other'),
-            phone=data.get('phone_or_messenger', ''),
+            phone=phone_or_messenger,
             consent=data.get('consent', False),
             email=data.get('email'),
             company=data.get('company'),
             team_size=data.get('team_size'),
-            comment=data.get('comment'),
-            preferred_channel=data.get('preferred_channel'),
-            product=data.get('product', 'unknown'),
-            source=data.get('source', 'unknown'),
+            comment=comment,
+            preferred_channel=preferred_channel,
+            product=product,
+            source=source,
             session_id=data.get('session_id'),
             utm_source=data.get('utm_source'),
             utm_medium=data.get('utm_medium'),
@@ -102,9 +172,15 @@ async def register_lead(request: Request):
         
         await user_service.register_contact(contact)
         
-        # Notify
+        # Notify (skip if deduped? Or notify "Lead Returned"?)
+        # Requirement says nothing about skipping notify. But usually we want to know.
+        # "если у вас есть таблица/лог событий — добавь событие ... если нет — просто добавь короткий лог"
+        if deduped:
+            logger.info(f"Lead updated (deduped): {user_id}")
+        
         if settings.SEND_NOTIFICATIONS:
-             msg = f"Unified Lead ({contact.product})\nRole: {contact.role}\nSource: {contact.source}"
+             prefix = "♻️ Lead Updated" if deduped else "Unified Lead"
+             msg = f"{prefix} ({contact.product})\nRole: {contact.role}\nSource: {contact.source}"
              if contact.comment:
                  msg += f"\nComment: {contact.comment}"
              
@@ -127,6 +203,7 @@ async def register_lead(request: Request):
         return JSONResponse({
             "status": "success", 
             "lead_id": user_id,
+            "deduped": deduped,
             "session_id": contact.session_id or str(user_id)
         })
     except Exception as e:
@@ -290,12 +367,29 @@ async def submit_test_results(request: Request):
         # Process via service
         test_id = await test_service.process_teremok_test(user_id, answers)
         
-        # Get result type for response/notification (Need to recalculate or fetch, 
-        # but service returns ID. Let's optimize service later or re-calc here briefly for notification)
-        # Actually Service creates result, we can just peek answers or fetch result.
-        # For now, let's keep fast calc here for notification context
+        # Calculate result locally for response context
         result_calc = calculate_result(answers)
         result_type = result_calc['type']
+
+        # === UNIFIED STORAGE ===
+        try:
+             # Try to get existing contact info to enrich source
+             contact_info = await user_service.get_contact(user_id)
+             src = contact_info.source if contact_info else 'unknown'
+             chn = contact_info.preferred_channel if contact_info else 'unknown'
+             
+             await test_repo.save_test_session(
+                 user_id=user_id,
+                 product='teremok',
+                 source=src,
+                 channel=chn,
+                 answers=answers,
+                 result=result_calc,
+                 meta={"type": result_type}
+             )
+        except Exception as e:
+            logger.warning(f"Failed to save unified test session (Teremok): {e}")
+        # =======================
         
         logger.info(f"Test result saved for user {user_id}: {result_type} (ID: {test_id})")
         
@@ -324,17 +418,33 @@ async def submit_test_results(request: Request):
         except Exception as e:
             logger.error(f"Failed to export test to sheets: {e}")
         
-        type_info = TYPES_DATA.get(result_type, {})
+        type_info = TYPES_DATA.get(result_type)
         
+        if type_info and hasattr(type_info, 'name_ru'):
+            # It's a TypeData object
+            res_title = type_info.name_ru
+            res_desc = type_info.short_desc
+            res_full = ""
+        elif isinstance(type_info, dict):
+            # Fallback if it were a dict
+            res_title = type_info.get("title", result_type)
+            res_desc = type_info.get("description", "Результат сохранен")
+            res_full = type_info.get("full_description", "")
+        else:
+            # Not found
+            res_title = result_type
+            res_desc = "Результат сохранен"
+            res_full = ""
+
         return JSONResponse({
             "status": "success",
             "result_id": test_id,
             "result_type": result_type,
             "scores": result_calc.get('scores', {}),
             "result_info": {
-                "title": type_info.get("title", result_type),
-                "description": type_info.get("description", "Результат сохранен"),
-                "full_description": type_info.get("full_description", "")
+                "title": res_title,
+                "description": res_desc,
+                "full_description": res_full
             }
         })
         
@@ -535,6 +645,26 @@ async def submit_formula_rsp_results(request: Request):
         result_obj = await test_service.process_formula_rsp(user_id, answers)
         test_id = result_obj.id
         
+        # === UNIFIED STORAGE ===
+        try:
+             # Try to get existing contact info to enrich source
+             contact_info = await user_service.get_contact(user_id)
+             src = contact_info.source if contact_info else 'unknown'
+             chn = contact_info.preferred_channel if contact_info else 'unknown'
+             
+             await test_repo.save_test_session(
+                 user_id=user_id,
+                 product='formula',
+                 source=src,
+                 channel=chn,
+                 answers=answers,
+                 result=result_obj.scores, # Or full obj
+                 meta={"type": result_obj.primary_name}
+             )
+        except Exception as e:
+            logger.warning(f"Failed to save unified test session (Formula): {e}")
+        # =======================
+
         logger.info(f"Formula RSP result saved for {user_id}: {result_obj.primary_code} (ID: {test_id})")
         
         # Export to Google Sheets

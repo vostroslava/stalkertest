@@ -4,7 +4,9 @@
  */
 
 // Configuration
-const API_BASE = '/api'; // Relative path to bot API (proxied or direct)
+const API_BASE = (window.__API_BASE__ && typeof window.__API_BASE__ === 'string')
+    ? window.__API_BASE__.replace(/\/+$/, '')
+    : 'http://localhost:8000/api';
 const LEAD_ID_KEY = 'teremok_lead_id';
 
 // State
@@ -29,7 +31,7 @@ async function handleContactSubmit(e) {
 
     // Spam Protection (Safe Check)
     try {
-        if (localStorage.getItem('lead_submitted_flag')) {
+        if (localStorage.getItem('teremok_lead_submitted_flag')) {
             alert('Вы уже отправляли заявку. Переходим к тесту.');
             if (window.closeLeadModal) window.closeLeadModal();
             if (window.openTestModal) window.openTestModal();
@@ -43,8 +45,14 @@ async function handleContactSubmit(e) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
 
-    // Collect Data
+    // Consent Validation
     const formData = new FormData(form);
+    if (formData.get('privacyConsent') !== 'on') {
+        alert('Подтвердите согласие на обработку данных.');
+        return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
 
     const payload = {
         name: formData.get('name'),
@@ -52,13 +60,22 @@ async function handleContactSubmit(e) {
         company: formData.get('company'),
         team_size: formData.get('team_size'),
         email: formData.get('email'),
+
+        // Standardized Fields
         phone_or_messenger: formData.get('phone'),
         preferred_channel: formData.get('messenger') || 'telegram',
         comment: formData.get('request'),
-        consent: formData.get('privacyConsent') === 'on' || true,
+
+        consent: formData.get('privacyConsent') === 'on',
         product: 'teremok',
         source: 'terem_landing',
-        utm_source: new URLSearchParams(window.location.search).get('utm_source') || ''
+
+        // Full UTM support
+        utm_source: urlParams.get('utm_source') || '',
+        utm_medium: urlParams.get('utm_medium') || '',
+        utm_campaign: urlParams.get('utm_campaign') || '',
+        utm_content: urlParams.get('utm_content') || '',
+        utm_term: urlParams.get('utm_term') || ''
     };
 
     try {
@@ -71,9 +88,12 @@ async function handleContactSubmit(e) {
 
         if (result.status === 'success') {
             // Save ID (Safe)
+            const leadId = result.lead_id ?? result.user_id ?? result.id;
+            console.log('Lead registered:', leadId);
+
             try {
-                if (result.user_id) sessionStorage.setItem(LEAD_ID_KEY, result.user_id);
-                localStorage.setItem('lead_submitted_flag', 'true');
+                if (leadId) sessionStorage.setItem(LEAD_ID_KEY, String(leadId));
+                localStorage.setItem('teremok_lead_submitted_flag', 'true');
             } catch (err) {
                 console.warn('Storage save failed:', err);
             }

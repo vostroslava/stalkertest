@@ -1,9 +1,6 @@
 
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnQR15r9C6AwTp_eYY3RV6uNKu7FaYt0xSra776uZS70rifwMxLKpfDyW0Ls85f5EQ/exec";
 
-let leadData = null;
-let testSubmitted = false;
 
 // ===== MOBILE MENU =====
 function toggleMobileMenu() {

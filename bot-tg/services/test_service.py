@@ -59,3 +59,6 @@ class TestService:
 
     async def get_recent_tests_full(self, limit: int = 10) -> list:
         return await self.test_repo.get_recent_tests_full(limit)
+
+    async def get_unified_tests(self, limit: int = 200, product: str = None, days: int = None) -> list:
+        return await self.test_repo.get_unified_tests(limit, product, days)
